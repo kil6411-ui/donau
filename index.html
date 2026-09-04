@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>돈암1동 복지지도</title>
+<meta name="description" content="돈암1동 주민이 어디에 도움을 청해야 할지 바로 찾는 동네 복지 안내">
+<meta name="theme-color" content="#2E6B4E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="복지지도">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+:root{
+  --ink:#1B2A22; --pine:#2E6B4E; --pine-dark:#204C38;
+  --mist:#EEF4EF; --paper:#FFFFFF; --persimmon:#B8541F;
+  --stone:#77837C; --line:#DCE3DD; --step:0px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;
+  font-size:calc(16.5px + var(--step)); line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:440px;margin:0 auto;padding:0 20px 56px}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none;padding:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--persimmon);outline-offset:2px;border-radius:4px}
+[hidden]{display:none !important}
+
+/* ── 머리 ── */
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:34px 0 0}
+.mark{font-family:"Gowun Batang",serif;font-weight:700;font-size:calc(33px + var(--step));
+  line-height:1.16;letter-spacing:-.02em;margin:0}
+.mark span{display:block;color:var(--pine)}
+.zoom{flex:0 0 auto;margin-top:6px;color:var(--stone);font-size:calc(14px + var(--step));
+  border:1px solid var(--line);border-radius:999px;padding:8px 13px;background:#fff;line-height:1.2}
+.zoom b{color:var(--pine);font-weight:700}
+.lede{margin:16px 0 0;color:var(--stone);font-size:calc(15.5px + var(--step))}
+
+/* ── 유일한 강조: 가장 먼저 걸 번호 ── */
+.first{margin-top:22px;border-radius:16px;background:var(--pine);color:#fff;padding:20px}
+.first p{margin:0;font-size:calc(15px + var(--step));color:rgba(255,255,255,.82)}
+.first strong{display:block;font-size:calc(19px + var(--step));margin:2px 0 15px}
+.first .call{background:#fff;color:var(--pine);border:none}
+.first .call:active{background:var(--mist)}
+.first .note{margin:13px 0 0;font-size:calc(14px + var(--step));color:rgba(255,255,255,.72)}
+
+/* ── 버튼 ── */
+.call,.way{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;
+  padding:0 16px;border-radius:11px;text-decoration:none;font-weight:700;
+  font-size:calc(17px + var(--step))}
+.call{background:var(--pine);color:#fff;border:none;width:100%}
+.call:active{background:var(--pine-dark)}
+.way{background:#fff;color:var(--pine);border:1.5px solid var(--pine);width:100%}
+.way:active{background:var(--mist)}
+.pair{display:flex;gap:9px;margin-top:15px}
+.pair .call,.pair .way{width:50%}
+
+.first .closed{margin-top:15px;padding:14px;border-radius:11px;
+  background:rgba(255,255,255,.14);font-size:calc(14.5px + var(--step));line-height:1.5}
+.first .closed b{color:#fff}
+.first .closed .way{margin-top:11px;background:transparent;color:#fff;
+  border-color:rgba(255,255,255,.6);min-height:48px}
+
+/* ── 두 번째 연락처 (조용하게) ── */
+.second{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-top:9px;padding:15px 18px;border:1px solid var(--line);border-radius:13px;
+  background:#fff;text-decoration:none;min-height:54px}
+.second span{font-size:calc(14px + var(--step));color:var(--stone);line-height:1.4}
+.second b{display:block;color:var(--ink);font-size:calc(16px + var(--step))}
+.second .num{flex:0 0 auto;color:var(--pine);font-weight:700;font-size:calc(15.5px + var(--step))}
+
+/* ── 상황 타일 ── */
+.ask{margin:30px 0 12px;font-size:calc(17px + var(--step));font-weight:700;color:var(--stone)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tile{display:flex;flex-direction:column;justify-content:flex-end;min-height:106px;padding:15px;
+  text-align:left;background:#fff;border:1px solid var(--line);border-radius:13px;
+  font-size:calc(16.5px + var(--step));font-weight:700;line-height:1.34}
+.tile:active{background:var(--mist)}
+.tile:last-child:nth-child(odd){grid-column:1 / -1;min-height:78px}
+.tile em{display:block;font-style:normal;font-weight:400;color:var(--stone);
+  font-size:calc(13.5px + var(--step));margin-top:3px}
+.tile svg{width:28px;height:28px;margin-bottom:auto;stroke:var(--pine);stroke-width:1.7;
+  fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── 조용한 보조 링크 줄 ── */
+.morerow{margin-top:20px;border-top:1px solid var(--line)}
+.morerow button{display:flex;align-items:center;justify-content:space-between;width:100%;
+  min-height:54px;color:var(--pine);font-weight:700;font-size:calc(16px + var(--step));
+  border-bottom:1px solid var(--line);text-align:left}
+.morerow button::after{content:"›";color:var(--stone);font-size:20px;font-weight:400}
+
+/* ── 홈 화면에 담기 (조용하게) ── */
+.install{margin-top:26px;color:var(--stone)}
+.install h2{margin:0 0 4px;font-size:calc(15.5px + var(--step));color:var(--ink)}
+.install p{margin:0;font-size:calc(14px + var(--step))}
+.install button{margin-top:12px;min-height:48px;padding:0 20px;border-radius:10px;
+  border:1.5px solid var(--pine);color:var(--pine);font-weight:700;font-size:calc(15.5px + var(--step))}
+.install .steps{margin:9px 0 0;padding-left:18px;font-size:calc(14px + var(--step))}
+.install .steps li{margin-top:3px}
+
+/* ── 목록 화면 ── */
+.back{display:inline-flex;align-items:center;gap:6px;margin:26px 0 6px;min-height:44px;
+  color:var(--pine);font-weight:700;font-size:calc(15.5px + var(--step))}
+.head{font-family:"Gowun Batang",serif;font-size:calc(26px + var(--step));font-weight:700;margin:0}
+.head-sub{color:var(--stone);margin:4px 0 18px;font-size:calc(14.5px + var(--step))}
+
+.kinds{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.kinds li{display:flex;align-items:center;gap:7px;font-size:calc(14px + var(--step));color:var(--stone)}
+.dot{width:11px;height:11px;border-radius:50%;flex:0 0 11px}
+
+/* ── 지도 ── */
+.mapbox{position:relative;height:250px;border-radius:13px;overflow:hidden;
+  margin-bottom:9px;background:var(--mist)}
+.mapbox.tall{height:58vh;min-height:330px}
+#map{width:100%;height:100%}
+.maphint{margin:0 0 20px;color:var(--stone);font-size:calc(13.5px + var(--step))}
+.mapoff{display:flex;align-items:center;justify-content:center;height:100%;padding:22px;
+  text-align:center;color:var(--stone);font-size:calc(14.5px + var(--step))}
+.pin{transform:translate(-50%,-100%);background:var(--pine);color:#fff;font-weight:700;
+  font-size:12.5px;line-height:1;padding:7px 11px;border-radius:8px;white-space:nowrap;
+  box-shadow:0 2px 7px rgba(0,0,0,.24)}
+.pin::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:6px solid;border-top-color:inherit}
+.pin.on{outline:2.5px solid var(--ink);outline-offset:2px}
+
+/* ── 자원 카드 ── */
+.card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--stone);
+  border-radius:13px;padding:18px;margin-bottom:10px;scroll-margin-top:14px}
+.card.on{border-color:var(--persimmon)}
+.card .shot{display:block;width:100%;height:146px;object-fit:cover;border-radius:9px;
+  margin:0 0 13px;background:var(--mist)}
+.card h3{margin:0;font-size:calc(19px + var(--step));line-height:1.34}
+.card .what{margin:6px 0 0;font-size:calc(15.5px + var(--step))}
+.meta{margin:13px 0 0;padding:0;list-style:none;color:var(--stone);font-size:calc(14.5px + var(--step))}
+.meta li{display:flex;gap:9px;margin-top:3px}
+.meta li b{flex:0 0 40px;font-weight:400;color:var(--stone)}
+.meta li span{color:var(--ink)}
+.todo{display:inline-block;margin-top:12px;padding:3px 9px;border-radius:5px;
+  background:#FBEEE5;color:var(--persimmon);font-size:calc(13.5px + var(--step));font-weight:700}
+.empty{padding:22px;border:1px dashed var(--line);border-radius:13px;color:var(--stone)}
+
+/* ── 손그림 지도 ── */
+.poster{border:1px solid var(--line);border-radius:13px;background:#fff;overflow:auto;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;margin-bottom:10px}
+.poster img{display:block;width:100%;height:auto}
+.poster.zoom img{width:260%;max-width:none}
+.postercap{margin:14px 0 0;color:var(--stone);font-size:calc(14.5px + var(--step))}
+.legend{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.legend li{display:flex;align-items:center;gap:7px;color:var(--stone);font-size:calc(14px + var(--step))}
+.pzoom{margin-top:2px;min-height:48px;padding:0 18px;border-radius:10px;
+  border:1.5px solid var(--pine);color:var(--pine);font-weight:700;font-size:calc(15.5px + var(--step))}
+
+/* ── 주민 이야기 남기기 ── */
+.voice{margin-top:22px;padding:20px;border-radius:16px;background:var(--mist)}
+.voice h2{margin:0 0 5px;font-size:calc(18px + var(--step))}
+.voice p{margin:0 0 15px;color:var(--stone);font-size:calc(14.5px + var(--step))}
+.voice button{width:100%;min-height:52px;border-radius:11px;background:#fff;
+  border:1.5px solid var(--pine);color:var(--pine);font-weight:700;font-size:calc(16.5px + var(--step))}
+.voice button:active{background:#fff;opacity:.7}
+
+.field{margin-bottom:22px}
+.field > label{display:block;font-weight:700;font-size:calc(17px + var(--step));margin-bottom:4px}
+.field .hint{display:block;color:var(--stone);font-size:calc(14px + var(--step));margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:11px;padding:14px;background:#fff;
+  border:1px solid var(--line);border-radius:11px;cursor:pointer;font-size:calc(16px + var(--step))}
+.opt input{margin:3px 0 0;width:20px;height:20px;accent-color:var(--pine);flex:0 0 20px}
+.opt.sel{border-color:var(--pine);background:var(--mist)}
+.opt em{display:block;font-style:normal;font-weight:400;color:var(--stone);font-size:calc(13.5px + var(--step))}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:11px 15px;border:1px solid var(--line);border-radius:999px;background:#fff;
+  font-size:calc(15.5px + var(--step));min-height:44px}
+.chip.sel{border-color:var(--pine);background:var(--pine);color:#fff;font-weight:700}
+textarea,input[type=text]{width:100%;padding:14px;border:1px solid var(--line);border-radius:11px;
+  background:#fff;font:inherit;color:var(--ink);resize:vertical}
+textarea{min-height:130px}
+.privacy{padding:15px;border-radius:11px;background:#fff;border:1px solid var(--line);
+  color:var(--stone);font-size:calc(13.5px + var(--step));margin-bottom:14px}
+.privacy ul{margin:7px 0 0;padding-left:17px}
+.agree{display:flex;align-items:flex-start;gap:11px;font-size:calc(15.5px + var(--step));
+  margin-bottom:20px;cursor:pointer}
+.agree input{margin:3px 0 0;width:20px;height:20px;accent-color:var(--pine);flex:0 0 20px}
+.urgent{padding:17px;border-radius:12px;background:var(--pine);color:#fff;margin-bottom:22px}
+.urgent p{margin:0 0 12px;font-size:calc(15.5px + var(--step))}
+.urgent .call{background:#fff;color:var(--pine)}
+.thanks{padding:30px 22px;text-align:center;background:var(--mist);border-radius:16px}
+.thanks h2{font-family:"Gowun Batang",serif;font-size:calc(24px + var(--step));margin:0 0 10px}
+.thanks p{margin:0 0 6px;color:var(--stone);font-size:calc(15.5px + var(--step))}
+.err{color:var(--persimmon);font-weight:700;margin:0 0 14px;font-size:calc(15px + var(--step))}
+
+/* ── 꼬리 ── */
+.foot{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);
+  color:var(--stone);font-size:calc(13.5px + var(--step))}
+.foot p{margin:0 0 5px}
+
+@media (prefers-reduced-motion:no-preference){
+  .view{animation:in .2s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<main id="app"></main>
+
+<script>
+/* =======================================================================
+   0) 카카오맵 JavaScript 키
+      developers.kakao.com → 내 애플리케이션 → 앱 생성
+      → [카카오맵] 사용 설정 ON
+      → [앱 설정] > [플랫폼] 에 배포 도메인 등록 (예: https://donam1.vercel.app)
+      → [앱 키] 의 "JavaScript 키" 를 아래에 붙여넣기
+      ※ REST API 키가 아니라 JavaScript 키입니다.
+      ※ 비워두면 지도 자리에 안내문만 뜨고 나머지 기능은 그대로 작동합니다.
+   ======================================================================= */
+const KAKAO_KEY = "";
+
+/* 지도 기본 중심 (돈암1동 일대) */
+const CENTER = {lat:37.6035, lng:127.0230};
+
+/* =======================================================================
+   0-1) 돈암1동 경계
+      주민들과 만든 종이 지도의 하늘색 영역을 지도 위에 그대로 얹습니다.
+      "여기까지가 우리 동네"를 보여주는 것이라 개인정보가 전혀 없습니다.
+
+      좌표 만드는 법 (10분):
+      1. geojson.io 접속 (가입 불필요)
+      2. 오른쪽 지도를 돈암1동으로 이동
+      3. 왼쪽 위 다각형(⬠) 도구로 동 경계를 따라 클릭하며 그리기
+      4. 왼쪽 창의 coordinates 숫자 묶음을 복사
+      5. 아래에 [위도, 경도] 순서로 바꿔 붙여넣기
+         ※ geojson.io는 [경도, 위도] 순서라 뒤집어야 합니다
+      비워두면 경계선 없이 지도만 나옵니다.
+   ======================================================================= */
+const BOUNDARY = [
+  // {lat:37.6050, lng:127.0190},
+  // {lat:37.6058, lng:127.0255},
+  // ...
+];
+
+/* =======================================================================
+   0-2) 손으로 만든 동네지도 이미지
+      src : 이미지 파일 이름 (index.html 과 같은 폴더에 두세요)
+            비워두면 이 화면이 아예 안 나옵니다.
+      ※ 반드시 '주민 공개용'으로 다시 만든 이미지를 쓰세요.
+        (얼굴 사진, 쓰레기집 위치, 주민 이슈 메모 등은 빼고)
+      ※ 글씨가 작으면 휴대폰에서 안 읽힙니다. 가로 2000px 이상 권장.
+   ======================================================================= */
+const POSTER = {
+  src: "",
+  caption: "2026년 지역알기 활동으로 주민들과 함께 만든 돈암1동 지도입니다."
+};
+
+/* =======================================================================
+   1) 상황 분류 — 주민이 쓰는 말로
+   ======================================================================= */
+/* =======================================================================
+   0-3) 주민 의견 받기 — 구글 폼 연결
+      뒤에 구글 폼을 두고, 화면은 이 앱 디자인 그대로 씁니다.
+      응답은 구글 스프레드시트에 자동으로 쌓입니다. (설정법은 README)
+
+      id     : 폼 주소 .../d/e/여기부분/viewform
+      fields : 각 항목의 entry 번호
+      비워두면 "이야기 남기기" 화면이 아예 안 나옵니다.
+   ======================================================================= */
+const ISSUE_FORM = {
+  id: "",
+  fields: { type:"entry.000000", where:"entry.000000", text:"entry.000000", contact:"entry.000000" }
+};
+
+/* 주민이 고를 수 있는 이야기 종류 */
+const ISSUE_TYPES = [
+  {id:"broken", label:"불편하거나 고장 난 곳", hint:"계단, 가로등, 손잡이, 길 등"},
+  {id:"danger", label:"위험해 보이는 곳",      hint:"미끄러운 길, 무너질 것 같은 곳 등"},
+  {id:"good",   label:"알려주고 싶은 좋은 곳", hint:"도움 주는 가게, 모임 장소 등"},
+  {id:"idea",   label:"동네에 바라는 것",      hint:"있었으면 하는 것, 하고 싶은 말"},
+  {id:"person", label:"걱정되는 이웃이 있어요", hint:"혼자 지내시는 분, 안 보이는 분 등"},
+];
+
+/* 통 목록 — 돈암1동에 맞게 고치세요 */
+const TONGS = ["1통","2통","3통","4통","5통","6통","7통","8통","잘 모르겠어요"];
+
+const CATEGORIES = [
+  {id:"meal",  icon:"bowl",  label:"끼니가 걱정될 때",  sub:"밥·반찬·도시락"},
+  {id:"health",icon:"pulse", label:"몸이 아플 때",      sub:"병원·보건소·건강"},
+  {id:"money", icon:"card",  label:"생활비가 급할 때",  sub:"긴급지원·복지신청"},
+  {id:"alone", icon:"cup",   label:"혼자 있기 힘들 때", sub:"경로당·모임·말벗"},
+  {id:"care",  icon:"hands", label:"돌봄이 필요할 때",  sub:"어르신·장애·아이"},
+  {id:"home",  icon:"house", label:"집이 불편할 때",    sub:"수리·청소·주거"},
+  {id:"mind",  icon:"sprout",label:"마음이 힘들 때",    sub:"상담·정신건강"},
+  {id:"report",icon:"bell",  label:"이웃이 걱정될 때",  sub:"위기가구 알리기"},
+  {id:"outreach",icon:"door",label:"밖에 나가기 어려울 때", sub:"찾아오는 서비스·이동지원"},
+];
+
+/* 아이콘 — 이모지는 기기마다 모양이 달라 직접 그린 선 아이콘을 씁니다 */
+const ICONS = {
+  bowl:  '<path d="M3 11h18c0 5-4 9-9 9s-9-4-9-9Z"/><path d="M8 7c0-1.5 1-2 1-3.5"/><path d="M12 7c0-1.5 1-2 1-3.5"/><path d="M16 7c0-1.5 1-2 1-3.5"/>',
+  pulse: '<path d="M3 12h4l2-5 3 10 2.5-6 1.5 3h5"/>',
+  card:  '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 15h4"/>',
+  cup:   '<path d="M4 8h13v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8Z"/><path d="M17 10h1.8a2.2 2.2 0 0 1 0 4.4H17"/><path d="M4 21h13"/>',
+  hands: '<path d="M12 20s-7-4.2-7-9a3.6 3.6 0 0 1 7-1.4A3.6 3.6 0 0 1 19 11c0 4.8-7 9-7 9Z"/>',
+  house: '<path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>',
+  sprout:'<path d="M12 21v-8"/><path d="M12 13C12 9 9 6.5 5 6.5c0 4 3 6.5 7 6.5Z"/><path d="M12 15c0-3.2 2.6-5.5 6-5.5 0 3.4-2.6 5.5-6 5.5Z"/>',
+  bell:  '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M10 19a2.2 2.2 0 0 0 4 0"/>',
+  door:  '<path d="M14 3H6v18h8"/><path d="M11 12h.01"/><path d="M17 8l4 4-4 4"/><path d="M21 12h-7"/>',
+};
+
+/* =======================================================================
+   1-2) 자원 종류 — 주민들과 함께 만든 종이 지도의 색을 그대로 씁니다
+        share(빨강) 나눔가게 / hub(초록) 공공기관·거점공간 / club(노랑) 경로당
+        tel(회색) 전화로만 이용하는 곳
+   ======================================================================= */
+const KINDS = {
+  share:{label:"나눔가게",           color:"#D6342C"},
+  hub:  {label:"공공기관 · 거점공간", color:"#2E6B4E"},
+  club: {label:"경로당",             color:"#E8B32A"},
+  tel:  {label:"전화 상담",          color:"#6E7A73"},
+};
+
+/* =======================================================================
+   2) 자원 목록
+      addr 만 정확히 넣으면 지도 좌표는 카카오가 자동으로 찾습니다.
+      pin  : 지도 말풍선에 쓸 짧은 이름 (없으면 name 앞 6자)
+      lat/lng : 자동 검색이 안 되는 곳만 직접 넣으세요 (선택)
+      todo : true 면 "정보 확인 중" 표시. 다 채우면 지우세요.
+   ======================================================================= */
+const RESOURCES = [
+  {kind:"hub", cat:["money","care","home","report","outreach"],
+   name:"돈암1동 주민센터 복지팀", pin:"주민센터",
+   what:"복지 신청은 여기서 시작합니다. 무엇을 신청할 수 있는지부터 물어보세요.",
+   tel:"02-2241-5120", addr:"서울 성북구 정릉로 394",
+   when:"평일 09:00~18:00", who:"돈암1동 주민 누구나"},
+
+  {kind:"hub", cat:["meal","alone","care","money","outreach"],
+   name:"길음종합사회복지관", pin:"길음복지관",
+   what:"사례관리, 반찬·도시락, 어르신·아동 프로그램을 함께 상담합니다. 나오기 어려우시면 방문상담도 됩니다.",
+   tel:"02-985-0161", addr:"서울 성북구 삼양로2길 55",
+   when:"평일 09:00~18:00", who:"성북구 주민"},
+
+  {kind:"tel", cat:["money","care"],
+   name:"보건복지상담센터 129",
+   what:"어떤 복지제도를 받을 수 있는지 24시간 전화로 안내받습니다.",
+   tel:"129", addr:"", when:"24시간", who:"누구나"},
+
+  {kind:"tel", cat:["money","home","report"],
+   name:"서울시 다산콜 120",
+   what:"서울시 복지·생활 민원을 통합 안내합니다.",
+   tel:"120", addr:"", when:"24시간", who:"누구나"},
+
+  {kind:"tel", cat:["mind"],
+   name:"자살예방·정신건강 상담전화 109",
+   what:"마음이 많이 힘들 때 24시간 상담원과 이야기할 수 있습니다.",
+   tel:"109", addr:"", when:"24시간", who:"누구나"},
+
+  {kind:"tel", cat:["report","care"],
+   name:"노인보호전문기관 신고 1577-1389",
+   what:"어르신이 학대받고 있다고 느껴질 때 신고하고 상담합니다.",
+   tel:"1577-1389", addr:"", when:"24시간", who:"누구나"},
+
+  {kind:"tel", cat:["outreach","care","health"],
+   name:"국민건강보험공단 장기요양 1577-1000",
+   what:"요양보호사가 집으로 찾아오는 서비스를 신청합니다. 등급 신청부터 상담해 줍니다.",
+   tel:"1577-1000", addr:"", when:"평일 09:00~18:00", who:"만 65세 이상 또는 노인성 질병이 있는 분"},
+
+  {kind:"tel", cat:["outreach"],
+   name:"서울시 장애인콜택시 1588-4388",
+   what:"휠체어를 타거나 거동이 불편해 대중교통 이용이 어려울 때 부르는 차량입니다.",
+   tel:"1588-4388", addr:"", when:"24시간", who:"보행상 장애가 있는 분 (사전 등록 필요)"},
+
+  {kind:"hub", cat:["outreach","care","alone"],
+   name:"노인맞춤돌봄서비스 (주민센터 신청)",
+   what:"생활지원사가 정기적으로 방문해 안부를 확인하고 생활을 돕습니다.",
+   tel:"02-2241-5120", addr:"서울 성북구 정릉로 394",
+   when:"평일 09:00~18:00", who:"혼자 지내시는 어르신"},
+
+  /* ── ▼ 지역알기 활동 자료로 채워 넣을 자리 ─────────────── */
+  {kind:"share", cat:["meal","alone"], name:"나눔가게 (1호점)", pin:"나눔가게1",
+   what:"동네 가게에서 끼니와 생필품을 지원받습니다.",
+   tel:"", addr:"", when:"", who:"추천·연계된 주민", todo:true},
+
+  {kind:"share", cat:["meal","alone"], name:"나눔가게 (2호점)", pin:"나눔가게2",
+   what:"", tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"share", cat:["meal","alone"], name:"나눔가게 (3호점)", pin:"나눔가게3",
+   what:"", tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"club", cat:["alone"], name:"고운경로당", pin:"고운경로당",
+   what:"어르신들이 모여 식사하고 프로그램에 참여하는 8통 거점공간입니다.",
+   tel:"", addr:"", when:"", who:"동네 어르신", todo:true},
+
+  {kind:"club", cat:["alone"], name:"돈암삼성 경로당", pin:"돈암삼성경로당",
+   what:"", tel:"", addr:"", when:"", who:"동네 어르신", todo:true},
+
+  {kind:"hub", cat:["alone"], name:"8통 재봉반", pin:"8통 재봉반",
+   what:"", tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"hub", cat:["alone"], name:"8통 사랑방", pin:"8통 사랑방",
+   what:"주민들이 모여 이야기 나누는 사랑방입니다.",
+   tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"hub", cat:["alone"], name:"커먼즈 돈암아지트", pin:"돈암아지트",
+   what:"주민 소통 공간입니다. (공사 중)",
+   tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"hub", cat:["health"], name:"성북구보건소", pin:"보건소",
+   what:"예방접종, 건강검진, 만성질환 관리를 받습니다.",
+   tel:"", addr:"", when:"", who:"성북구 주민", todo:true},
+
+  {kind:"hub", cat:["health","care"], name:"성북구 치매안심센터", pin:"치매안심센터",
+   what:"기억력 검사와 치매 어르신·가족 지원을 받습니다.",
+   tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"hub", cat:["mind"], name:"성북구 정신건강복지센터", pin:"정신건강센터",
+   what:"", tel:"", addr:"", when:"", who:"", todo:true},
+
+  {kind:"hub", cat:["home"], name:"집수리·청소 지원 (주민센터 연계)",
+   what:"", tel:"", addr:"", when:"", who:"", todo:true},
+];
+
+
+const FIRST_CALL = {
+  name:"길음종합사회복지관 마을동행팀",
+  tel:"02-985-0161",
+  line:"어디에 물어볼지 모르겠다면",
+  note:"어떤 도움을 받을 수 있는지 함께 찾아드립니다."
+};
+
+/* 업무 시간 — 이 시간이 아니면 24시간 연락처를 대신 안내합니다 */
+const HOURS = {
+  label:"평일 09:00~18:00",
+  days:[1,2,3,4,5],   /* 0=일 … 6=토 */
+  from:9, to:18
+};
+const AFTER_HOURS = { name:"보건복지상담센터", tel:"129" };
+const EMERGENCY   = { name:"119", tel:"119" };
+
+function isOpenNow(){
+  const d = new Date();
+  const h = d.getHours() + d.getMinutes()/60;
+  return HOURS.days.includes(d.getDay()) && h >= HOURS.from && h < HOURS.to;
+}
+
+/* 공적 급여·복지 신청은 주민센터 담당이라 바로 아래 함께 둡니다 */
+const SECOND_CALL = {
+  name:"돈암1동 주민센터 복지팀",
+  tel:"02-2241-5120",
+  line:"복지 신청·상담은"
+};
+/* ▲▲▲ 고치는 부분은 여기까지 ▲▲▲ */
+
+
+/* ── 카카오맵 로딩 ────────────────────────────────────── */
+let kakaoReady = null;
+function loadKakao(){
+  if (kakaoReady) return kakaoReady;
+  kakaoReady = new Promise(resolve=>{
+    if (!KAKAO_KEY) return resolve(false);
+    const s = document.createElement("script");
+    s.src = "https://dapi.kakao.com/v2/maps/sdk.js?appkey="+KAKAO_KEY+"&libraries=services&autoload=false";
+    s.onload = ()=> kakao.maps.load(()=>resolve(true));
+    s.onerror = ()=> resolve(false);
+    document.head.appendChild(s);
+  });
+  return kakaoReady;
+}
+
+const geoCache = {};
+function geocode(addr){
+  return new Promise(resolve=>{
+    if (geoCache[addr] !== undefined) return resolve(geoCache[addr]);
+    new kakao.maps.services.Geocoder().addressSearch(addr,(res,status)=>{
+      const ok = status === kakao.maps.services.Status.OK && res.length;
+      const p = ok ? {lat:+res[0].y, lng:+res[0].x} : null;
+      geoCache[addr] = p;
+      resolve(p);
+    });
+  });
+}
+
+/* ── 도우미 ──────────────────────────────────────────── */
+const app = document.getElementById("app");
+const esc = s => (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const telHref = t => "tel:" + t.replace(/[^0-9+]/g,"");
+const mapHref = a => "https://map.kakao.com/link/search/" + encodeURIComponent(a);
+const shortName = r => r.pin || r.name.slice(0,6);
+const kindOf = r => KINDS[r.kind] || KINDS.tel;
+const hasPlace = r => !!(r.addr || (r.lat && r.lng));
+let bigger = false;
+
+/* ── 앱으로 설치 (PWA) ───────────────────────────────── */
+let installEvt = null;
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches
+  || window.navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  installEvt = e;
+  home();
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+
+function installBlock(){
+  if (isStandalone) return "";
+  if (installEvt) return `
+    <section class="install">
+      <h2>홈 화면에 담아두기</h2>
+      <p>한 번 담아두면 인터넷이 안 될 때도 전화번호를 볼 수 있습니다.</p>
+      <button id="doinstall">홈 화면에 담기</button>
+    </section>`;
+  if (isIOS) return `
+    <section class="install">
+      <h2>홈 화면에 담아두기</h2>
+      <p>한 번 담아두면 인터넷이 안 될 때도 전화번호를 볼 수 있습니다.</p>
+      <ol class="steps">
+        <li>화면 아래 <b>공유</b> 단추(↑)를 누릅니다</li>
+        <li><b>홈 화면에 추가</b>를 누릅니다</li>
+        <li>오른쪽 위 <b>추가</b>를 누릅니다</li>
+      </ol>
+    </section>`;
+  return "";
+}
+
+function shell(inner){
+  app.innerHTML = `<div class="view">${inner}</div>
+    <div class="foot">
+      <p>돈암1동 복지지도 · 길음종합사회복지관 마을동행팀</p>
+      <p>내용이 바뀌었거나 빠진 곳이 있으면 주민센터나 복지관으로 알려주세요.</p>
+    </div>`;
+}
+
+/* ── 지도 그리기 ─────────────────────────────────────── */
+async function drawMap(items, tall){
+  const box = document.getElementById("mapbox");
+  if (!box) return;
+  const ok = await loadKakao();
+  if (!ok){
+    box.innerHTML = `<div class="mapoff">지도를 준비 중입니다.<br>아래 목록의 <b>길찾기</b>를 눌러 주세요.</div>`;
+    return;
+  }
+  const map = new kakao.maps.Map(box.querySelector("#map"), {
+    center:new kakao.maps.LatLng(CENTER.lat, CENTER.lng), level:5
+  });
+  map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+
+  /* 주민들이 그린 동 경계를 그대로 얹습니다 */
+  let outline = null;
+  if (BOUNDARY.length > 2) {
+    const path = BOUNDARY.map(p => new kakao.maps.LatLng(p.lat, p.lng));
+    outline = new kakao.maps.Polygon({
+      map, path,
+      strokeWeight:2, strokeColor:"#4A87B8", strokeOpacity:.9, strokeStyle:"solid",
+      fillColor:"#8FC0E4", fillOpacity:.22
+    });
+  }
+
+  const bounds = new kakao.maps.LatLngBounds();
+  if (BOUNDARY.length > 2) BOUNDARY.forEach(p => bounds.extend(new kakao.maps.LatLng(p.lat, p.lng)));
+  let found = 0;
+  const pins = [];
+
+  for (const r of items){
+    let p = (r.lat && r.lng) ? {lat:r.lat, lng:r.lng} : (r.addr ? await geocode(r.addr) : null);
+    if (!p) continue;
+    found++;
+    const pos = new kakao.maps.LatLng(p.lat, p.lng);
+    bounds.extend(pos);
+
+    const el = document.createElement("div");
+    el.className = "pin";
+    el.style.background = kindOf(r).color;
+    el.style.borderTopColor = kindOf(r).color;
+    el.textContent = shortName(r);
+    el.setAttribute("role","button");
+    el.tabIndex = 0;
+    const focus = ()=>{
+      pins.forEach(x=>x.classList.remove("on"));
+      el.classList.add("on");
+      const card = document.getElementById("card-"+r._i);
+      if (card){
+        document.querySelectorAll(".card").forEach(c=>c.classList.remove("on"));
+        card.classList.add("on");
+        card.scrollIntoView({behavior:"smooth", block:"center"});
+      }
+    };
+    el.onclick = focus;
+    el.onkeydown = e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); focus(); } };
+    pins.push(el);
+
+    new kakao.maps.CustomOverlay({map, position:pos, content:el, yAnchor:1, clickable:true});
+  }
+
+  if (found === 0 && BOUNDARY.length < 3){
+    box.innerHTML = `<div class="mapoff">아직 지도에 표시할 주소가 없습니다.<br>자원 정보에 주소를 넣으면 자동으로 나타납니다.</div>`;
+    return;
+  }
+  if (found === 1) map.setCenter(bounds.getSouthWest());
+  else map.setBounds(bounds, 40, 40, 40, 40);
+  if (tall) setTimeout(()=>map.relayout(), 60);
+}
+
+/* ── 화면: 처음 ──────────────────────────────────────── */
+function home(){
+  shell(`
+    <header class="top">
+      <h1 class="mark">돈암1동<span>복지지도</span></h1>
+      <button class="zoom" id="zoom" aria-pressed="${bigger}">글씨 <b>${bigger?"작게":"크게"}</b></button>
+    </header>
+    <p class="lede">우리 동네에서 도움받을 수 있는 곳을 모았습니다.</p>
+
+    <section class="first">
+      <p>${esc(FIRST_CALL.line)}</p>
+      <strong>${esc(FIRST_CALL.name)}</strong>
+      <a class="call" href="${telHref(FIRST_CALL.tel)}">전화하기 ${esc(FIRST_CALL.tel)}</a>
+      <p class="note">${esc(FIRST_CALL.note)} · ${esc(HOURS.label)}</p>
+      ${isOpenNow() ? "" : `
+      <div class="closed">
+        지금은 업무 시간이 아닙니다.<br>
+        급하시면 <b>${esc(AFTER_HOURS.name)} ${esc(AFTER_HOURS.tel)}</b>번으로 24시간 상담됩니다.
+        <a class="way" href="${telHref(AFTER_HOURS.tel)}">${esc(AFTER_HOURS.tel)} 전화하기</a>
+      </div>`}
+    </section>
+
+    <a class="second" href="${telHref(SECOND_CALL.tel)}">
+      <span>${esc(SECOND_CALL.line)}<b>${esc(SECOND_CALL.name)}</b></span>
+      <span class="num">${esc(SECOND_CALL.tel)}</span>
+    </a>
+
+    <h2 class="ask">어떤 일로 오셨나요?</h2>
+    <div class="grid">
+      ${CATEGORIES.map(c=>`<button class="tile" data-cat="${c.id}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[c.icon]||""}</svg>
+        ${esc(c.label)}<em>${esc(c.sub)}</em></button>`).join("")}
+    </div>
+
+    <div class="morerow">
+      <button id="allmap">동네 전체 지도 보기</button>
+      ${POSTER.src ? `<button id="poster">주민들이 그린 동네지도</button>` : ""}
+    </div>
+
+    ${ISSUE_FORM.id ? `
+    <section class="voice">
+      <h2>우리 동네 이야기를 들려주세요</h2>
+      <p>불편한 곳, 위험한 곳, 알려주고 싶은 좋은 곳.
+         주민이 알려주신 이야기로 동네를 바꿔갑니다.</p>
+      <button id="voice">이야기 남기기</button>
+    </section>` : ""}
+
+    ${installBlock()}
+  `);
+
+  document.getElementById("zoom").onclick = ()=>{
+    bigger = !bigger;
+    document.documentElement.style.setProperty("--step", bigger?"4px":"0px");
+    home();
+  };
+  app.querySelectorAll(".tile").forEach(b=> b.onclick = ()=> list(b.dataset.cat));
+  document.getElementById("allmap").onclick = ()=> list(null);
+  const pb = document.getElementById("poster");
+  if (pb) pb.onclick = posterView;
+
+  const vb = document.getElementById("voice");
+  if (vb) vb.onclick = issueView;
+
+  const ib = document.getElementById("doinstall");
+  if (ib) ib.onclick = async () => {
+    if (!installEvt) return;
+    installEvt.prompt();
+    await installEvt.userChoice;
+    installEvt = null;
+    home();
+  };
+}
+
+/* ── 화면: 주민들이 그린 동네지도 ─────────────────────── */
+function posterView(){
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">주민들이 그린 동네지도</h2>
+    <p class="head-sub">돈암1동을 함께 걸으며 찾은 곳들</p>
+
+    <ul class="legend">
+      <li><span class="dot" style="background:#D6342C"></span>나눔가게</li>
+      <li><span class="dot" style="background:#2E6B4E"></span>공공기관 · 거점공간</li>
+      <li><span class="dot" style="background:#E8B32A"></span>경로당</li>
+    </ul>
+
+    <div class="poster" id="poster"><img src="${esc(POSTER.src)}" alt="주민들과 함께 만든 돈암1동 동네지도"></div>
+    <button class="pzoom" id="pzoom">지도 크게 보기</button>
+    <p class="postercap" style="margin-top:14px">${esc(POSTER.caption)}</p>
+  `);
+  document.getElementById("back").onclick = home;
+  const box = document.getElementById("poster");
+  const btn = document.getElementById("pzoom");
+  btn.onclick = ()=>{
+    box.classList.toggle("zoom");
+    btn.textContent = box.classList.contains("zoom") ? "지도 줄이기" : "지도 크게 보기";
+    if (box.classList.contains("zoom")) box.scrollLeft = box.scrollWidth/2 - box.clientWidth/2;
+  };
+  window.scrollTo(0,0);
+}
+
+/* ── 화면: 목록 + 지도 ───────────────────────────────── */
+function card(r){
+  const rows = [
+    r.addr && `<li><b>주소</b><span>${esc(r.addr)}</span></li>`,
+    r.when && `<li><b>시간</b><span>${esc(r.when)}</span></li>`,
+    r.who  && `<li><b>대상</b><span>${esc(r.who)}</span></li>`,
+  ].filter(Boolean).join("");
+
+  let actions = "";
+  if (r.tel && r.addr) actions = `<div class="pair">
+      <a class="call" href="${telHref(r.tel)}">전화하기</a>
+      <a class="way" href="${mapHref(r.addr)}" target="_blank" rel="noopener">길찾기</a></div>`;
+  else if (r.tel) actions = `<div class="pair"><a class="call" href="${telHref(r.tel)}">전화하기 ${esc(r.tel)}</a></div>`;
+  else if (r.addr) actions = `<div class="pair"><a class="way" href="${mapHref(r.addr)}" target="_blank" rel="noopener">길찾기</a></div>`;
+
+  return `<article class="card" id="card-${r._i}" style="border-left-color:${kindOf(r).color}">
+    ${r.photo ? `<img class="shot" src="${esc(r.photo)}" alt="${esc(r.name)} 모습" loading="lazy">` : ""}
+    <h3>${esc(r.name)}</h3>
+    ${r.what ? `<p class="what">${esc(r.what)}</p>` : ""}
+    ${rows ? `<ul class="meta">${rows}</ul>` : ""}
+    ${r.todo ? `<span class="todo">정보 확인 중</span>` : ""}
+    ${actions}
+  </article>`;
+}
+
+/* ── 화면: 주민 이야기 남기기 ─────────────────────────── */
+let issue = {type:"", where:"", text:"", contact:"", agree:false};
+
+function issueView(err){
+  const t = ISSUE_TYPES.find(x=>x.id===issue.type);
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">우리 동네 이야기</h2>
+    <p class="head-sub">주민이 알려주신 내용은 마을동행팀이 확인합니다</p>
+
+    ${err ? `<p class="err">${esc(err)}</p>` : ""}
+
+    <div class="field">
+      <label>어떤 이야기인가요?</label>
+      <div class="opts">
+        ${ISSUE_TYPES.map(x=>`
+          <label class="opt${issue.type===x.id?" sel":""}">
+            <input type="radio" name="itype" value="${x.id}" ${issue.type===x.id?"checked":""}>
+            <span>${esc(x.label)}<em>${esc(x.hint)}</em></span>
+          </label>`).join("")}
+      </div>
+    </div>
+
+    ${issue.type==="person" ? `
+    <div class="urgent">
+      <p><b>지금 쓰러져 계시거나 위급해 보이면</b> 글로 남기지 마시고
+         ${esc(EMERGENCY.tel)}로 바로 신고해 주세요.</p>
+      <a class="call" href="${telHref(EMERGENCY.tel)}">${esc(EMERGENCY.tel)} 신고하기</a>
+      <p style="margin:14px 0 0">이 이야기함은 ${esc(HOURS.label)}에 확인합니다.
+         ${isOpenNow()
+           ? `지금은 업무 시간이니 전화가 더 빠릅니다.`
+           : `지금은 업무 시간이 아니라 다음 근무일에 확인됩니다.`}</p>
+      <a class="call" href="${telHref(isOpenNow()?FIRST_CALL.tel:AFTER_HOURS.tel)}" style="margin-top:12px">
+        ${isOpenNow() ? esc(FIRST_CALL.name)+" "+esc(FIRST_CALL.tel)
+                      : esc(AFTER_HOURS.name)+" "+esc(AFTER_HOURS.tel)+" (24시간)"}</a>
+    </div>` : ""}
+
+    <div class="field">
+      <label>어디인가요?</label>
+      <span class="hint">사는 곳이 아니라, 이야기하시려는 장소입니다</span>
+      <div class="chips">
+        ${TONGS.map(t=>`<button class="chip${issue.where===t?" sel":""}" data-tong="${esc(t)}">${esc(t)}</button>`).join("")}
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="itext">어떤 일인지 알려주세요</label>
+      <span class="hint">짧게 쓰셔도 괜찮습니다</span>
+      <textarea id="itext" placeholder="예) 고운경로당 올라가는 계단에 손잡이가 없어서 비 오는 날 미끄럽습니다.">${esc(issue.text)}</textarea>
+    </div>
+
+    <div class="field">
+      <label for="icontact">연락처 (안 쓰셔도 됩니다)</label>
+      <span class="hint">더 여쭤볼 일이 있을 때만 연락드립니다</span>
+      <input type="text" id="icontact" inputmode="tel" placeholder="010-0000-0000" value="${esc(issue.contact)}">
+    </div>
+
+    <div class="privacy">
+      <b>알려드립니다</b>
+      <ul>
+        <li>남기신 내용은 길음종합사회복지관 마을동행팀이 동네 사업에 참고합니다.</li>
+        <li>연락처는 확인 목적으로만 쓰고, 1년 뒤 지웁니다.</li>
+        <li>연락처를 안 쓰셔도 이야기는 남길 수 있습니다.</li>
+        <li>다른 사람의 이름이나 집 주소는 적지 말아 주세요.</li>
+      </ul>
+    </div>
+
+    <label class="agree">
+      <input type="checkbox" id="iagree" ${issue.agree?"checked":""}>
+      <span>위 내용을 확인했고, 이야기를 남기는 데 동의합니다.</span>
+    </label>
+
+    <button class="call" id="isend">이야기 보내기</button>
+  `);
+
+  document.getElementById("back").onclick = home;
+
+  app.querySelectorAll('input[name=itype]').forEach(el=>{
+    el.onchange = ()=>{ syncFields(); issue.type = el.value; issueView(); };
+  });
+  app.querySelectorAll(".chip").forEach(el=>{
+    el.onclick = ()=>{
+      syncFields();
+      issue.where = (issue.where === el.dataset.tong) ? "" : el.dataset.tong;
+      issueView();
+    };
+  });
+  document.getElementById("isend").onclick = sendIssue;
+  window.scrollTo(0,0);
+}
+
+function syncFields(){
+  const t = document.getElementById("itext");
+  const c = document.getElementById("icontact");
+  const a = document.getElementById("iagree");
+  if (t) issue.text = t.value;
+  if (c) issue.contact = c.value;
+  if (a) issue.agree = a.checked;
+}
+
+async function sendIssue(){
+  syncFields();
+  if (!issue.type)            return issueView("어떤 이야기인지 골라 주세요.");
+  if (!issue.text.trim())     return issueView("어떤 일인지 적어 주세요.");
+  if (!issue.agree)           return issueView("맨 아래 동의에 표시해 주세요.");
+
+  const t = ISSUE_TYPES.find(x=>x.id===issue.type);
+  const body = new FormData();
+  body.append(ISSUE_FORM.fields.type,    t ? t.label : issue.type);
+  body.append(ISSUE_FORM.fields.where,   issue.where || "적지 않음");
+  body.append(ISSUE_FORM.fields.text,    issue.text.trim());
+  body.append(ISSUE_FORM.fields.contact, issue.contact.trim() || "적지 않음");
+
+  const btn = document.getElementById("isend");
+  if (btn) { btn.textContent = "보내는 중…"; btn.disabled = true; }
+
+  try {
+    await fetch(`https://docs.google.com/forms/d/e/${ISSUE_FORM.id}/formResponse`,
+                {method:"POST", mode:"no-cors", body});
+  } catch(e) {
+    return issueView("보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.");
+  }
+
+  issue = {type:"", where:"", text:"", contact:"", agree:false};
+  shell(`
+    <div class="thanks">
+      <h2>고맙습니다</h2>
+      <p>남겨주신 이야기가 잘 전달되었습니다.</p>
+      <p>마을동행팀이 확인하고 동네 사업에 반영하겠습니다.</p>
+    </div>
+    <button class="call" id="hb" style="margin-top:20px">처음으로</button>
+  `);
+  document.getElementById("hb").onclick = home;
+  window.scrollTo(0,0);
+}
+
+function kindLegend(items){
+  const used = Object.keys(KINDS).filter(k => items.some(r => (r.kind||"tel") === k));
+  if (used.length < 2) return "";
+  return `<ul class="kinds">${used.map(k=>
+    `<li><span class="dot" style="background:${KINDS[k].color}"></span>${esc(KINDS[k].label)}</li>`
+  ).join("")}</ul>`;
+}
+
+function list(catId){
+  const all = catId ? RESOURCES.filter(r=>r.cat.includes(catId)) : RESOURCES.slice();
+  all.forEach((r,i)=> r._i = i);
+  const c = catId ? CATEGORIES.find(x=>x.id===catId) : {label:"동네 전체 지도", sub:"돈암1동에서 도움받을 수 있는 모든 곳"};
+  const mapped = all.filter(hasPlace);
+
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">${esc(c.label)}</h2>
+    <p class="head-sub">${esc(c.sub)}</p>
+    ${kindLegend(all)}
+    ${mapped.length ? `
+      <div class="mapbox${catId?"":" tall"}" id="mapbox"><div id="map"></div></div>
+      <p class="maphint">지도의 이름표를 누르면 아래에서 자세한 내용을 볼 수 있습니다.</p>` : ""}
+    ${all.length ? all.map(card).join("") : `<div class="empty">아직 등록된 곳이 없습니다. 주민센터나 복지관으로 문의해 주세요.</div>`}
+  `);
+
+  document.getElementById("back").onclick = home;
+  window.scrollTo(0,0);
+  if (mapped.length) drawMap(mapped, !catId);
+}
+
+home();
+</script>
+</div>
+</body>
+</html>
