@@ -1,0 +1,25 @@
+{
+  "name": "돈암1동 복지지도",
+  "short_name": "복지지도",
+  "description": "돈암1동에서 도움받을 수 있는 곳을 찾는 동네 안내",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF8F2",
+  "theme_color": "#2E6B4E",
+  "lang": "ko",
+  "dir": "ltr",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "주민센터 복지팀 전화",
+      "short_name": "주민센터",
+      "url": "./?call=dong"
+    }
+  ]
+}
