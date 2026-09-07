@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>돈암1동 이웃살핌</title>
+<meta name="description" content="혼자 계신 이웃이 걱정될 때, 길음종합사회복지관 마을동행팀에 알리는 곳">
+<meta name="theme-color" content="#2E6B4E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="이웃살핌">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+:root{
+  --ink:#1B2A22; --pine:#2E6B4E; --pine-dark:#204C38;
+  --mist:#EEF4EF; --paper:#FFFFFF; --persimmon:#B8541F;
+  --stone:#77837C; --line:#DCE3DD; --step:0px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;
+  font-size:calc(16.5px + var(--step)); line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:440px;margin:0 auto;padding:0 20px 56px}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none;padding:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--persimmon);outline-offset:2px;border-radius:4px}
+
+/* ── 머리 ── */
+.brand{display:block;width:190px;height:auto;margin:30px 0 0}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 0 0}
+.mark{font-family:"Gowun Batang",serif;font-weight:700;font-size:calc(32px + var(--step));
+  line-height:1.16;letter-spacing:-.02em;margin:0}
+.mark span{display:block;color:var(--pine)}
+.zoom{flex:0 0 auto;margin-top:6px;color:var(--stone);font-size:calc(14px + var(--step));
+  border:1px solid var(--line);border-radius:999px;padding:8px 13px;line-height:1.2}
+.zoom b{color:var(--pine);font-weight:700}
+.lede{margin:16px 0 0;color:var(--stone);font-size:calc(15.5px + var(--step))}
+
+/* ── 주 행동 ── */
+.act{margin-top:24px;padding:22px;border-radius:16px;background:var(--pine);color:#fff}
+.act h2{margin:0 0 6px;font-size:calc(19px + var(--step))}
+.act p{margin:0 0 17px;font-size:calc(15px + var(--step));color:rgba(255,255,255,.82)}
+.act .go{width:100%;min-height:58px;border-radius:12px;background:#fff;color:var(--pine);
+  font-weight:700;font-size:calc(18px + var(--step))}
+.act .go:active{background:var(--mist)}
+
+/* ── 이런 경우 ── */
+.cases{margin-top:28px}
+.cases h2{margin:0 0 12px;font-size:calc(17px + var(--step));color:var(--stone);font-weight:700}
+.cases ul{list-style:none;margin:0;padding:0}
+.cases li{display:flex;gap:12px;padding:15px 0;border-top:1px solid var(--line);
+  font-size:calc(16px + var(--step))}
+.cases li:last-child{border-bottom:1px solid var(--line)}
+.cases .n{flex:0 0 auto;color:var(--pine);font-weight:700}
+
+/* ── 조용한 링크 줄 ── */
+.rows{margin-top:22px}
+.rows button,.rows a{display:flex;align-items:center;justify-content:space-between;width:100%;
+  min-height:54px;color:var(--pine);font-weight:700;font-size:calc(16px + var(--step));
+  border-bottom:1px solid var(--line);text-align:left;text-decoration:none}
+.rows > *:first-child{border-top:1px solid var(--line)}
+.rows button::after,.rows a::after{content:"›";color:var(--stone);font-size:20px;font-weight:400}
+
+/* ── 위급 ── */
+.sos{margin-top:22px;padding:18px;border-radius:14px;border:1.5px solid var(--persimmon)}
+.sos p{margin:0 0 13px;font-size:calc(15.5px + var(--step))}
+.sos b{color:var(--persimmon)}
+.sos a{display:flex;align-items:center;justify-content:center;min-height:54px;border-radius:11px;
+  background:var(--persimmon);color:#fff;font-weight:700;text-decoration:none;
+  font-size:calc(18px + var(--step))}
+
+/* ── 공통 버튼 ── */
+.call{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;
+  border-radius:12px;background:var(--pine);color:#fff;border:none;font-weight:700;
+  text-decoration:none;font-size:calc(17.5px + var(--step))}
+.call:active{background:var(--pine-dark)}
+.call.ghost{background:#fff;color:var(--pine);border:1.5px solid var(--pine)}
+
+/* ── 속 화면 ── */
+.back{display:inline-flex;align-items:center;gap:6px;margin:26px 0 6px;min-height:44px;
+  color:var(--pine);font-weight:700;font-size:calc(15.5px + var(--step))}
+.head{font-family:"Gowun Batang",serif;font-size:calc(26px + var(--step));font-weight:700;margin:0}
+.head-sub{color:var(--stone);margin:5px 0 22px;font-size:calc(14.5px + var(--step))}
+
+/* ── 폼 ── */
+.field{margin-bottom:24px}
+.field > label{display:block;font-weight:700;font-size:calc(17px + var(--step));margin-bottom:4px}
+.field .hint{display:block;color:var(--stone);font-size:calc(14px + var(--step));margin-bottom:11px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:15px;border:1px solid var(--line);
+  border-radius:12px;cursor:pointer;font-size:calc(16px + var(--step))}
+.opt input{margin:3px 0 0;width:21px;height:21px;accent-color:var(--pine);flex:0 0 21px}
+.opt.sel{border-color:var(--pine);background:var(--mist)}
+.opt em{display:block;font-style:normal;font-weight:400;color:var(--stone);
+  font-size:calc(13.5px + var(--step));margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:11px 16px;border:1px solid var(--line);border-radius:999px;
+  font-size:calc(15.5px + var(--step));min-height:46px}
+.chip.sel{border-color:var(--pine);background:var(--pine);color:#fff;font-weight:700}
+textarea,input[type=text]{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;
+  background:#fff;font:inherit;color:var(--ink);resize:vertical}
+textarea{min-height:130px}
+.privacy{padding:16px;border-radius:12px;background:var(--mist);color:var(--stone);
+  font-size:calc(14px + var(--step));margin-bottom:16px}
+.privacy b{color:var(--ink)}
+.privacy ul{margin:8px 0 0;padding-left:18px}
+.privacy li{margin-top:5px}
+.agree{display:flex;align-items:flex-start;gap:12px;font-size:calc(15.5px + var(--step));
+  margin-bottom:22px;cursor:pointer}
+.agree input{margin:3px 0 0;width:21px;height:21px;accent-color:var(--pine);flex:0 0 21px}
+.err{color:var(--persimmon);font-weight:700;margin:0 0 18px;padding:15px 16px;
+  border:1.5px solid var(--persimmon);border-radius:12px;background:#FBEEE5;
+  font-size:calc(15.5px + var(--step));line-height:1.5}
+
+/* ── 구역 제목 ── */
+.part{margin:34px 0 3px;font-family:"Gowun Batang",serif;font-size:calc(21px + var(--step));
+  font-weight:700;padding-bottom:10px;border-bottom:2px solid var(--pine)}
+.part + .field,.part + .parthint{margin-top:18px}
+.parthint{margin:0 0 16px;color:var(--stone);font-size:calc(14.5px + var(--step))}
+
+/* ── 큰 네모 (추천 이유) ── */
+.boxes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{position:relative;display:flex;align-items:center;min-height:96px;padding:16px 14px;
+  border:1.5px solid var(--line);border-radius:14px;text-align:left;line-height:1.35;
+  font-weight:700;font-size:calc(16px + var(--step))}
+.box:active{background:var(--mist)}
+.box.sel{border-color:var(--pine);background:var(--mist);padding-right:34px}
+.box.sel::after{content:"✓";position:absolute;top:11px;right:12px;color:var(--pine);
+  font-size:19px;font-weight:700}
+
+/* ── 안내 화면 ── */
+.signs{list-style:none;margin:0 0 26px;padding:0}
+.signs li{padding:15px 0;border-top:1px solid var(--line);font-size:calc(16px + var(--step))}
+.signs li:last-child{border-bottom:1px solid var(--line)}
+.signs b{display:block}
+.signs em{font-style:normal;color:var(--stone);font-size:calc(14px + var(--step))}
+.qa{margin-bottom:24px}
+.qa h3{margin:0 0 5px;font-size:calc(16.5px + var(--step))}
+.qa p{margin:0;color:var(--stone);font-size:calc(15px + var(--step))}
+.note{padding:17px;border-radius:12px;background:var(--mist);font-size:calc(15px + var(--step));
+  margin-bottom:24px}
+
+/* ── 전화 접수 안내 ── */
+.telbox{margin-top:16px;padding:18px;border-radius:14px;background:var(--mist)}
+.telbox p{margin:0 0 13px;font-size:calc(15.5px + var(--step))}
+.telbox .call{background:#fff}
+.subnote{margin:14px 0 0;text-align:center;color:var(--stone);
+  font-size:calc(15px + var(--step))}
+.subnote a{color:var(--pine);text-decoration:none}
+
+/* ── 동네 지도 ── */
+.legend{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:7px 16px}
+.legend li{display:flex;align-items:center;gap:7px;color:var(--stone);
+  font-size:calc(14px + var(--step))}
+.ldot{width:12px;height:12px;border-radius:50%;flex:0 0 12px}
+.mapbox{border:1px solid var(--line);border-radius:13px;overflow:auto;background:#fff;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom}
+.mapbox img{display:block;width:100%;height:auto}
+.mapbox.big img{width:340%;max-width:none}
+.mapcap{margin:14px 0 0;color:var(--stone);font-size:calc(14px + var(--step))}
+
+/* ── 마침 ── */
+.thanks{padding:34px 24px;text-align:center;background:var(--mist);border-radius:16px}
+.thanks h2{font-family:"Gowun Batang",serif;font-size:calc(24px + var(--step));margin:0 0 12px}
+.thanks p{margin:0 0 7px;color:var(--stone);font-size:calc(15.5px + var(--step))}
+
+/* ── 설치 ── */
+.install{margin-top:28px;color:var(--stone)}
+.install h2{margin:0 0 4px;font-size:calc(15.5px + var(--step));color:var(--ink)}
+.install p{margin:0;font-size:calc(14px + var(--step))}
+.install button{margin-top:12px;min-height:48px;padding:0 20px;border-radius:10px;
+  border:1.5px solid var(--pine);color:var(--pine);font-weight:700;font-size:calc(15.5px + var(--step))}
+.install ol{margin:9px 0 0;padding-left:18px;font-size:calc(14px + var(--step))}
+
+.foot{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);
+  color:var(--stone);font-size:calc(13.5px + var(--step))}
+.foot p{margin:0 0 5px}
+[hidden]{display:none !important}
+@media (prefers-reduced-motion:no-preference){
+  .view{animation:in .2s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<main id="app"></main>
+
+<script>
+/* =======================================================================
+   설정 — 여기만 고치시면 됩니다
+   ======================================================================= */
+
+/* 1) 접수 서버 주소
+      「접수서버.gs」 를 구글 앱스 스크립트에 올리고 웹 앱으로 배포하면
+      나오는 주소를 그대로 붙여넣으세요. (설치법은 그 파일 맨 위에)
+        예) https://script.google.com/macros/s/AKfycb..../exec
+      비워두면 접수하기를 눌렀을 때 전화 안내가 나옵니다. */
+/* 배포 화면에 나온 웹 앱 URL 을 그대로 붙여넣습니다.
+   기관 계정은 아래 두 형태가 있습니다. 첫 번째가 안 되면 두 번째로 바꿔보세요.
+     https://script.google.com/a/macros/guswc.org/s/배포ID/exec
+     https://script.google.com/macros/s/배포ID/exec                */
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbxk2CgAPbCkYbbovmVA9mahn7Io7ltRG3ss0ylbKQtJ-mRG4B0y6wGzBN_cAEf0fRk/exec";
+
+/* 2) 시범 지역과 통 목록 — 돈암1동 실제 구성에 맞게 */
+const AREA  = "돈암1동";
+const TONGS = ["1통","2통","3통","4통","5통","6통","7통","8통","잘 모르겠어요"];
+
+/* 3) 연락처 */
+const CENTER = { name:"복지관", tel:"02-6315-6411" };
+const HELP   = { name:"보건복지상담센터", tel:"129" };
+const DONG   = { name:"돈암1동 주민센터", tel:"02-2241-5120" };
+
+/* 3-2) 주민들과 함께 만든 동네지도
+       비워두면 지도 메뉴가 나오지 않습니다. */
+const MAP = {
+  src: "donam1-map.jpg",
+  caption: "주민들과 함께 돈암1동을 걸으며 만든 지도입니다."
+};
+
+/* 4) 업무 시간 — 이 시간이 아니면 24시간 연락처를 안내합니다 */
+const HOURS = { label:"평일 09:00~18:00", days:[1,2,3,4,5], from:9, to:18 };
+
+/* 4-2) 본인에게 연락드려도 되는지 */
+const CONSENTS = [
+  {id:"yes",  label:"본인께 여쭤봤고, 연락받아도 좋다고 하셨습니다",
+   hint:"바로 전화드리거나 찾아뵙겠습니다"},
+  {id:"no",   label:"본인은 원치 않으시는 것 같습니다",
+   hint:"조심스럽게 다가가겠습니다"},
+  {id:"none", label:"아직 본인께 말씀드리지 못했습니다",
+   hint:"가장 많은 경우입니다. 저희가 알아서 조심히 찾아뵙습니다"},
+];
+
+/* 5) 추천 이유 — 큰 네모로 골라 여러 개 선택합니다 */
+const REASONS = [
+  "혼자 지내십니다",
+  "며칠째 보이지 않습니다",
+  "우편물·쓰레기가 쌓여 있습니다",
+  "건강이 안 좋아 보이십니다",
+  "가족 왕래가 없습니다",
+  "끼니를 거르시는 것 같습니다",
+  "형편이 어려워 보이십니다",
+  "최근 큰일을 겪으셨습니다",
+  "도움 청할 곳이 없어 보입니다",
+  "그 밖의 사정이 있습니다",
+];
+
+/* 7) 안내 화면에 쓰는 관찰 신호 */
+const GUIDE = [
+  ["며칠째 보이지 않습니다", "늘 같은 시간에 나오시던 분이 갑자기 안 보이면 그것만으로 알려주셔도 됩니다."],
+  ["우편물과 고지서가 쌓입니다", "문 앞이나 우편함에 며칠치가 그대로 있으면 안에서 나오지 못하고 계실 수 있습니다."],
+  ["집 앞에 쓰레기가 쌓입니다", "치울 기운이 없거나 도움을 청할 곳이 없다는 신호일 때가 많습니다."],
+  ["밤에도 불이 켜지지 않습니다", "며칠 이어지면 살펴볼 필요가 있습니다."],
+  ["부쩍 여위거나 편찮아 보입니다", "끼니를 거르시거나 병원에 못 가고 계실 수 있습니다."],
+  ["찾아오는 사람이 없습니다", "가족과 왕래가 끊긴 분들이 가장 도움이 늦습니다."],
+  ["인사를 피하십니다", "사람을 만나기 어려워진 상태일 수 있습니다. 서운해 마시고 알려주세요."],
+  ["큰일을 겪으셨습니다", "배우자와 사별하셨거나 일자리를 잃으신 뒤가 특히 위험한 시기입니다."],
+];
+
+/* 8) 자주 묻는 질문 */
+const FAQ = [
+  ["이름을 밝혀야 하나요?",
+   "아닙니다. 연락처를 적지 않으셔도 됩니다. 다만 위치를 다시 여쭤야 할 때가 많아, 남겨주시면 훨씬 빨리 찾아뵙습니다."],
+  ["그분이 누가 알렸는지 알게 되나요?",
+   "원하시면 밝히지 않습니다. 찾아뵐 때도 알리신 분에 대해서는 말씀드리지 않습니다."],
+  ["잘못 알린 거면 어떡하죠?",
+   "괜찮습니다. 확인하는 것이 저희 일입니다. 아니어도 아무 일 없습니다. 망설이다 늦는 편이 훨씬 걱정스럽습니다."],
+  ["어떻게 처리되나요?",
+   "담당자가 확인한 뒤 직접 찾아뵙고, 필요하면 주민센터와 함께 지원을 검토합니다."],
+  ["결과를 알려주시나요?",
+   "걱정되는 이웃을 알려주신 분들께 어떤 조치가 이루어지는지 알려드리겠습니다."],
+  ["신고한 내용이 이 앱에 보이나요?",
+   "보이지 않습니다. 마을동행팀 담당자만 확인합니다."],
+];
+
+
+/* ▲▲▲ 고치는 부분은 여기까지 ▲▲▲ ================================== */
+
+
+/* ── 도우미 ─────────────────────────────────────────── */
+const app = document.getElementById("app");
+const esc = v => String(v ?? "").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const telHref = v => "tel:" + String(v ?? "").replace(/[^0-9+]/g,"");
+let bigger = false;
+
+function isOpenNow(){
+  const d = new Date(), h = d.getHours() + d.getMinutes()/60;
+  return HOURS.days.includes(d.getDay()) && h >= HOURS.from && h < HOURS.to;
+}
+
+function shell(inner, keep){
+  const y = window.scrollY || window.pageYOffset || 0;
+  app.innerHTML = `<div class="view">${inner}</div>
+    <div class="foot">
+      <p>성북구립 길음종합사회복지관 마을동행팀</p>
+      <p>${esc(AREA)} 이웃살핌 · ${esc(CENTER.tel)}</p>
+      <p>알려주신 내용은 담당자만 확인하며, 이 앱에는 표시되지 않습니다.</p>
+    </div>`;
+  if (keep) window.scrollTo(0, y); else window.scrollTo(0, 0);
+}
+
+/* ── 설치 (PWA) ─────────────────────────────────────── */
+let installEvt = null;
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches
+  || window.navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; home(); });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+
+function installBlock(){
+  if (isStandalone) return "";
+  if (installEvt) return `
+    <section class="install">
+      <h2>홈 화면에 담아두기</h2>
+      <p>담아두시면 필요할 때 바로 찾을 수 있습니다.</p>
+      <button id="doinstall">홈 화면에 담기</button>
+    </section>`;
+  if (isIOS) return `
+    <section class="install">
+      <h2>홈 화면에 담아두기</h2>
+      <p>담아두시면 필요할 때 바로 찾을 수 있습니다.</p>
+      <ol><li>아래 <b>공유</b> 단추(↑)를 누릅니다</li>
+          <li><b>홈 화면에 추가</b>를 누릅니다</li>
+          <li>오른쪽 위 <b>추가</b>를 누릅니다</li></ol>
+    </section>`;
+  return "";
+}
+
+/* ── 화면: 처음 ─────────────────────────────────────── */
+function home(keep){
+  shell(`
+    <img class="brand" src="logo.png" alt="성북구립 길음종합사회복지관">
+    <header class="top">
+      <h1 class="mark">${esc(AREA)}<span>이웃살핌</span></h1>
+      <button class="zoom" id="zoom" aria-pressed="${bigger}">글씨 <b>${bigger?"작게":"크게"}</b></button>
+    </header>
+    <p class="lede">혼자 계신 이웃이 걱정될 때 알려주세요.
+       마을동행팀이 조용히 찾아뵙습니다.</p>
+
+    <section class="act">
+      <h2>걱정되는 이웃이 있으신가요?</h2>
+      <p>이름을 몰라도, 확실하지 않아도 괜찮습니다.</p>
+      <button class="go" id="report">이웃 안부 알리기</button>
+    </section>
+
+    <section class="cases">
+      <h2>이런 경우에 알려주세요</h2>
+      <ul>
+        <li><span class="n">·</span>며칠째 보이지 않는 이웃이 있을 때</li>
+        <li><span class="n">·</span>우편물이나 쓰레기가 문 앞에 쌓여 있을 때</li>
+        <li><span class="n">·</span>혼자 지내시는데 찾아오는 사람이 없을 때</li>
+      </ul>
+    </section>
+
+    <div class="rows">
+      <button id="guide">어떤 경우에 알려야 하나요?</button>
+      <button id="faq">자주 묻는 질문</button>
+      ${MAP.src ? `<button id="map">우리 동네 지도 보기</button>` : ""}
+      <a href="${telHref(CENTER.tel)}">전화로 알리기 · ${esc(CENTER.tel)}</a>
+    </div>
+
+    <section class="sos">
+      <p><b>지금 위급해 보이신다면</b> 여기에 쓰지 마시고
+         119에 바로 신고해 주세요. 문이 잠겨 있어도 출동합니다.</p>
+      <a href="tel:119">119 신고하기</a>
+    </section>
+
+    ${isOpenNow() ? "" : `
+    <div class="note">
+      지금은 복지관 업무 시간이 아닙니다 (${esc(HOURS.label)}).<br>
+      알려주신 내용은 다음 근무일에 확인됩니다.
+      급하시면 <b>${esc(HELP.name)} ${esc(HELP.tel)}</b>번으로 24시간 상담됩니다.
+    </div>`}
+
+    ${installBlock()}
+  `, keep);
+
+  document.getElementById("zoom").onclick = ()=>{
+    bigger = !bigger;
+    document.documentElement.style.setProperty("--step", bigger?"4px":"0px");
+    home(true);
+  };
+  document.getElementById("report").onclick = function(){ reportView(); };
+  document.getElementById("guide").onclick  = guideView;
+  document.getElementById("faq").onclick    = faqView;
+  const mb = document.getElementById("map");
+  if (mb) mb.onclick = function(){ mapView(); };
+  const ib = document.getElementById("doinstall");
+  if (ib) ib.onclick = async ()=>{
+    if (!installEvt) return;
+    installEvt.prompt(); await installEvt.userChoice; installEvt = null; home();
+  };
+}
+
+/* ── 화면: 어떤 경우에 알려야 하나요 ─────────────────── */
+function guideView(){
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">어떤 경우에 알려야 하나요</h2>
+    <p class="head-sub">하나라도 해당되면 알려주셔도 됩니다</p>
+
+    <ul class="signs">
+      ${GUIDE.map(([t,d])=>`<li><b>${esc(t)}</b><em>${esc(d)}</em></li>`).join("")}
+    </ul>
+
+    <div class="note">
+      <b>확실하지 않아도 괜찮습니다.</b><br>
+      맞는지 확인하는 것이 저희 일입니다. 잘못 아셨더라도 아무 일 없습니다.
+      망설이시다 늦는 편이 훨씬 걱정스럽습니다.
+    </div>
+
+    <button class="call" id="go">이웃 안부 알리기</button>
+  `);
+  document.getElementById("back").onclick = function(){ home(); };
+  document.getElementById("go").onclick = function(){ reportView(); };
+}
+
+/* ── 화면: 우리 동네 지도 ───────────────────────────── */
+let mapBig = false;
+
+function mapView(keep){
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">우리 동네 지도</h2>
+    <p class="head-sub">돈암1동을 함께 걸으며 찾은 곳들</p>
+
+    <ul class="legend">
+      <li><span class="ldot" style="background:#D6342C"></span>나눔가게</li>
+      <li><span class="ldot" style="background:#2E6B4E"></span>공공기관 · 거점공간</li>
+      <li><span class="ldot" style="background:#E8B32A"></span>경로당</li>
+    </ul>
+
+    <div class="mapbox${mapBig?" big":""}" id="mapbox">
+      <img src="${esc(MAP.src)}" alt="주민들과 함께 만든 돈암1동 지도" id="mapimg">
+    </div>
+    <button class="call ghost" id="zoomtoggle" style="margin-top:12px">
+      ${mapBig ? "지도 줄이기" : "지도 크게 보기"}</button>
+    <p class="mapcap">${esc(MAP.caption)}</p>
+    ${mapBig ? `<p class="mapcap">손가락으로 밀어서 좌우를 보실 수 있습니다.</p>` : ""}
+
+    <button class="call" id="go" style="margin-top:26px">이웃 안부 알리기</button>
+  `, keep);
+  document.getElementById("back").onclick = function(){ home(); };
+  document.getElementById("go").onclick = function(){ reportView(); };
+  document.getElementById("zoomtoggle").onclick = ()=>{
+    mapBig = !mapBig;
+    mapView(true);
+    if (mapBig){
+      const b = document.getElementById("mapbox");
+      if (b) b.scrollLeft = (b.scrollWidth - b.clientWidth) / 2;
+    }
+  };
+}
+
+/* ── 화면: 자주 묻는 질문 ───────────────────────────── */
+function faqView(){
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">자주 묻는 질문</h2>
+    <p class="head-sub">망설이게 되는 것들을 모았습니다</p>
+    ${FAQ.map(([q,a])=>`<div class="qa"><h3>${esc(q)}</h3><p>${esc(a)}</p></div>`).join("")}
+    <button class="call" id="go">이웃 안부 알리기</button>
+  `);
+  document.getElementById("back").onclick = function(){ home(); };
+  document.getElementById("go").onclick = function(){ reportView(); };
+}
+
+/* ── 화면: 이웃 추천 ────────────────────────────────── */
+let r = {name:"", addr:"", tel:"", age:"", consent:"", reasons:[], detail:"",
+         reporter:"", reporterTel:"", agree:false};
+
+function reportView(err, keep){
+  shell(`
+    <button class="back" id="back">← 처음으로</button>
+    <h2 class="head">이웃 안부 알리기</h2>
+    <p class="head-sub">${esc(AREA)} 안에서 받고 있습니다</p>
+
+    ${err ? `<p class="err" id="errbox">${esc(err)}</p>` : ""}
+
+    <section class="sos">
+      <p><b>지금 위급해 보이신다면</b> 여기에 쓰지 마시고
+         119에 바로 신고해 주세요. 문이 잠겨 있어도 출동합니다.</p>
+      <a href="tel:119">119 신고하기</a>
+    </section>
+
+    <div class="telbox">
+      <p>글로 적기 어려우시면 <b>전화로 알려주셔도 됩니다.</b></p>
+      <a class="call ghost" href="${telHref(CENTER.tel)}">복지관 ${esc(CENTER.tel)} 전화하기</a>
+    </div>
+
+    <h3 class="part">걱정되는 분</h3>
+
+    <div class="field">
+      <label for="f-name">성함</label>
+      <span class="hint">모르시면 "○○호 어르신"처럼 적으셔도 됩니다</span>
+      <input type="text" id="f-name" value="${esc(r.name)}" placeholder="예) 김○○ 어르신">
+    </div>
+
+    <div class="field">
+      <label for="f-addr">사시는 곳</label>
+      <span class="hint">아는 만큼만. 동·호수를 모르시면 건물이나 골목만 적어주세요</span>
+      <input type="text" id="f-addr" value="${esc(r.addr)}" placeholder="예) ○○아파트 3동 502호 / ○○슈퍼 골목 안쪽">
+    </div>
+
+    <div class="field">
+      <label for="f-tel">연락처</label>
+      <span class="hint">모르시면 비워두세요</span>
+      <input type="text" id="f-tel" inputmode="tel" value="${esc(r.tel)}" placeholder="010-0000-0000">
+    </div>
+
+    <div class="field">
+      <label for="f-age">연세</label>
+      <span class="hint">정확히 모르시면 "70대쯤"으로 적으셔도 됩니다</span>
+      <input type="text" id="f-age" value="${esc(r.age)}" placeholder="예) 78세 / 70대쯤">
+    </div>
+
+    <div class="field">
+      <label>본인께 연락드려도 될까요?</label>
+      <span class="hint">모르셔도 괜찮습니다. 어떻게 찾아뵐지 정하는 데만 씁니다</span>
+      <div class="opts">
+        ${CONSENTS.map(c=>`
+          <label class="opt${r.consent===c.id?" sel":""}">
+            <input type="radio" name="cs" value="${c.id}" ${r.consent===c.id?"checked":""}>
+            <span>${esc(c.label)}<em>${esc(c.hint)}</em></span>
+          </label>`).join("")}
+      </div>
+    </div>
+
+    <h3 class="part">추천하시는 이유</h3>
+    <p class="parthint">해당되는 것을 모두 눌러 주세요. 여러 개 고르셔도 됩니다.</p>
+
+    <div class="boxes">
+      ${REASONS.map((x,i)=>`
+        <button class="box${r.reasons.includes(x)?" sel":""}" data-r="${i}"
+                aria-pressed="${r.reasons.includes(x)}">${esc(x)}</button>`).join("")}
+    </div>
+
+    <div class="field" style="margin-top:26px">
+      <label for="f-detail">자세한 내용</label>
+      <span class="hint">보신 대로 적어 주세요. 짧아도 괜찮습니다</span>
+      <textarea id="f-detail" placeholder="예) 옆집 어르신인데 일주일 넘게 못 뵀습니다. 우편물이 문 앞에 그대로 쌓여 있습니다.">${esc(r.detail)}</textarea>
+    </div>
+
+    <h3 class="part">추천하신 분</h3>
+
+    <div class="field">
+      <label for="f-reporter">성함</label>
+      <input type="text" id="f-reporter" value="${esc(r.reporter)}" placeholder="예) 박○○">
+    </div>
+
+    <div class="field">
+      <label for="f-reporterTel">연락처</label>
+      <span class="hint">확인할 일이 있을 때 연락드립니다</span>
+      <input type="text" id="f-reporterTel" inputmode="tel" value="${esc(r.reporterTel)}" placeholder="010-0000-0000">
+    </div>
+
+    <div class="privacy">
+      <b>꼭 읽어주세요</b>
+      <ul>
+        <li>알려주신 내용은 <b>이 앱 어디에도 표시되지 않습니다.</b> 마을동행팀 담당자만 봅니다.</li>
+        <li>담당자가 확인한 뒤 찾아뵙고, 필요하면 주민센터와 함께 지원을 검토합니다.</li>
+        <li><b>원하신다면 추천하신 분이 누구인지 그분께 밝히지 않습니다.</b></li>
+        <li>알려주신 정보는 상담·지원 목적으로만 쓰고 1년 뒤 지웁니다.</li>
+        <li>본인이 원치 않으시면 지원을 강요하지 않습니다.</li>
+      </ul>
+    </div>
+
+    <label class="agree">
+      <input type="checkbox" id="f-agree" ${r.agree?"checked":""}>
+      <span>위 내용을 읽었고, 이웃을 돕기 위해 알린다는 데 동의합니다.</span>
+    </label>
+
+    <button class="call" id="send">접수하기</button>
+    <p class="subnote">전화로 알리셔도 됩니다 ·
+       <a href="${telHref(CENTER.tel)}"><b>${esc(CENTER.tel)}</b></a></p>
+  `, keep);
+
+  document.getElementById("back").onclick = function(){ home(); };
+  app.querySelectorAll('input[name=cs]').forEach(el=>{
+    el.onchange = ()=>{ sync(); r.consent = el.value; reportView(null, true); };
+  });
+  app.querySelectorAll("[data-r]").forEach(el=>{
+    el.onclick = ()=>{
+      sync();
+      const x = REASONS[+el.dataset.r];
+      r.reasons = r.reasons.includes(x) ? r.reasons.filter(y=>y!==x) : r.reasons.concat([x]);
+      reportView(null, true);
+    };
+  });
+  const sb = document.getElementById("send");
+  if (sb) sb.onclick = function(){ send(); };
+}
+
+function sync(){
+  ["name","addr","tel","age","detail","reporter","reporterTel"].forEach(k=>{
+    const e = document.getElementById("f-" + k);
+    if (e) r[k] = e.value;
+  });
+  const a = document.getElementById("f-agree");
+  if (a) r.agree = a.checked;
+}
+
+async function send(){
+  sync();
+  if (!r.name.trim() && !r.addr.trim())
+    return reportView("성함이나 사시는 곳 중 하나는 알려주세요. 그래야 찾아뵐 수 있습니다.");
+  if (!r.reasons.length)
+    return reportView("추천하시는 이유를 하나 이상 골라 주세요.");
+  if (!r.reporter.trim())
+    return reportView("추천하신 분 성함을 적어 주세요.");
+  if (!r.agree)
+    return reportView("맨 아래 동의에 표시해 주세요.");
+
+  if (!ENDPOINT)
+    return reportView("아직 인터넷 접수 준비가 끝나지 않았습니다. 아래 번호로 전화 주시면 바로 받겠습니다.");
+
+  const cs = CONSENTS.find(x=>x.id===r.consent);
+  const 자료 = {
+    name:        r.name.trim(),
+    addr:        (AREA + " " + r.addr.trim()).trim(),
+    tel:         r.tel.trim(),
+    age:         r.age.trim(),
+    consent:     cs ? cs.label : "",
+    reasons:     r.reasons.join(" / "),
+    detail:      r.detail.trim(),
+    reporter:    r.reporter.trim(),
+    reporterTel: r.reporterTel.trim()
+  };
+
+  const btn = document.getElementById("send");
+  if (btn){ btn.textContent = "보내는 중…"; btn.disabled = true; }
+
+  let 결과 = null;
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      /* text/plain 으로 보내야 사전 확인 요청 없이 바로 전달됩니다 */
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(자료),
+      redirect: "follow"
+    });
+    결과 = await res.json();
+  } catch (e) {
+    결과 = null;
+  }
+
+  if (!결과 || !결과.ok) {
+    return reportView("보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요. 계속 안 되면 아래 번호로 전화 주세요.");
+  }
+
+  r = {name:"", addr:"", tel:"", age:"", consent:"", reasons:[], detail:"",
+       reporter:"", reporterTel:"", agree:false};
+  shell(`
+    <div class="thanks">
+      <h2>접수되었습니다</h2>
+      <p>마을동행팀 담당자가 확인하겠습니다.</p>
+      <p>${isOpenNow() ? "오늘 안에 확인합니다." : "다음 근무일에 확인합니다."}</p>
+      <p style="margin-top:14px">어떤 조치가 이루어지는지 알려드리겠습니다.</p>
+    </div>
+    <button class="call ghost" id="hb" style="margin-top:22px">처음으로</button>
+  `);
+  document.getElementById("hb").onclick = function(){ home(); };
+}
+
+home();
+</script>
+</div>
+</body>
+</html>
