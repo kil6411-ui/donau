@@ -118,7 +118,9 @@ textarea{min-height:130px}
 .agree{display:flex;align-items:flex-start;gap:12px;font-size:calc(15.5px + var(--step));
   margin-bottom:22px;cursor:pointer}
 .agree input{margin:3px 0 0;width:21px;height:21px;accent-color:var(--pine);flex:0 0 21px}
-.err{color:var(--persimmon);font-weight:700;margin:0 0 16px;font-size:calc(15px + var(--step))}
+.err{color:var(--persimmon);font-weight:700;margin:0 0 18px;padding:15px 16px;
+  border:1.5px solid var(--persimmon);border-radius:12px;background:#FBEEE5;
+  font-size:calc(15.5px + var(--step));line-height:1.5}
 
 /* ── 구역 제목 ── */
 .part{margin:34px 0 3px;font-family:"Gowun Batang",serif;font-size:calc(21px + var(--step));
@@ -486,6 +488,8 @@ function reportView(err, keep){
     <h2 class="head">이웃 안부 알리기</h2>
     <p class="head-sub">${esc(AREA)} 안에서 받고 있습니다</p>
 
+    ${err ? `<p class="err" id="errbox">${esc(err)}</p>` : ""}
+
     <section class="sos">
       <p><b>지금 위급해 보이신다면</b> 여기에 쓰지 마시고
          119에 바로 신고해 주세요. 문이 잠겨 있어도 출동합니다.</p>
@@ -496,8 +500,6 @@ function reportView(err, keep){
       <p>글로 적기 어려우시면 <b>전화로 알려주셔도 됩니다.</b></p>
       <a class="call ghost" href="${telHref(CENTER.tel)}">복지관 ${esc(CENTER.tel)} 전화하기</a>
     </div>
-
-    ${err ? `<p class="err" style="margin-top:22px">${esc(err)}</p>` : ""}
 
     <h3 class="part">걱정되는 분</h3>
 
