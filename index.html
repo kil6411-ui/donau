@@ -208,6 +208,7 @@ const FORM = {
     addr:"entry.000000",        /* 사시는 곳            */
     tel:"entry.000000",         /* 연락처               */
     age:"entry.000000",         /* 연세                 */
+    consent:"entry.000000",     /* 본인 연락 동의 여부  */
     reasons:"entry.000000",     /* 추천 이유            */
     detail:"entry.000000",      /* 자세한 내용          */
     reporter:"entry.000000",    /* 추천하신 분 성함     */
@@ -228,11 +229,21 @@ const DONG   = { name:"돈암1동 주민센터", tel:"02-2241-5120" };
        비워두면 지도 메뉴가 나오지 않습니다. */
 const MAP = {
   src: "donam1-map.jpg",
-  caption: "우리가 만든 돈암1동 지도입니다."
+  caption: "주민들과 함께 돈암1동을 걸으며 만든 지도입니다."
 };
 
 /* 4) 업무 시간 — 이 시간이 아니면 24시간 연락처를 안내합니다 */
 const HOURS = { label:"평일 09:00~18:00", days:[1,2,3,4,5], from:9, to:18 };
+
+/* 4-2) 본인에게 연락드려도 되는지 */
+const CONSENTS = [
+  {id:"yes",  label:"본인께 여쭤봤고, 연락받아도 좋다고 하셨습니다",
+   hint:"바로 전화드리거나 찾아뵙겠습니다"},
+  {id:"no",   label:"본인은 원치 않으시는 것 같습니다",
+   hint:"조심스럽게 다가가겠습니다"},
+  {id:"none", label:"아직 본인께 말씀드리지 못했습니다",
+   hint:"가장 많은 경우입니다. 저희가 알아서 조심히 찾아뵙습니다"},
+];
 
 /* 5) 추천 이유 — 큰 네모로 골라 여러 개 선택합니다 */
 const REASONS = [
@@ -262,20 +273,14 @@ const GUIDE = [
 
 /* 8) 자주 묻는 질문 */
 const FAQ = [
-  ["이름을 밝혀야 하나요?",
-   "아닙니다. 연락처를 적지 않으셔도 신고됩니다. 다만 위치를 다시 여쭤야 할 때가 많아, 남겨주시면 훨씬 빨리 찾아뵙습니다."],
-  ["그분이 누가 알렸는지 알게 되나요?",
-   "알려드리지 않습니다. 찾아뵐 때도 알리신 분에 대해서는 말씀드리지 않습니다."],
   ["잘못 알린 거면 어떡하죠?",
    "괜찮습니다. 확인하는 것이 저희 일입니다. 아니어도 아무 일 없습니다. 망설이다 늦는 편이 훨씬 걱정스럽습니다."],
   ["어떻게 처리되나요?",
    "담당자가 확인한 뒤 직접 찾아뵙고, 필요하면 주민센터와 함께 지원을 검토합니다."],
   ["결과를 알려주시나요?",
-   "알려드리지 못합니다. 그분의 개인정보이기 때문입니다. 양해 부탁드립니다."],
+   "걱정되는 이웃을 알려주신 분들께 어떤 조치가 이루어지는지 알려드리겠습니다 "],
   ["신고한 내용이 이 앱에 보이나요?",
    "보이지 않습니다. 마을동행팀 담당자만 확인합니다."],
-  ["이웃과의 다툼이나 소음도 되나요?",
-   "그런 일은 " + DONG.name + "으로 문의해 주세요. 이곳은 혼자 지내시는 분의 안부를 살피는 곳입니다."],
 ];
 
 /* ▲▲▲ 고치는 부분은 여기까지 ▲▲▲ ================================== */
@@ -472,7 +477,7 @@ function faqView(){
 }
 
 /* ── 화면: 이웃 추천 ────────────────────────────────── */
-let r = {name:"", addr:"", tel:"", age:"", reasons:[], detail:"",
+let r = {name:"", addr:"", tel:"", age:"", consent:"", reasons:[], detail:"",
          reporter:"", reporterTel:"", agree:false};
 
 function reportView(err){
@@ -520,6 +525,18 @@ function reportView(err){
       <input type="text" id="f-age" value="${esc(r.age)}" placeholder="예) 78세 / 70대쯤">
     </div>
 
+    <div class="field">
+      <label>본인께 연락드려도 될까요?</label>
+      <span class="hint">모르셔도 괜찮습니다. 어떻게 찾아뵐지 정하는 데만 씁니다</span>
+      <div class="opts">
+        ${CONSENTS.map(c=>`
+          <label class="opt${r.consent===c.id?" sel":""}">
+            <input type="radio" name="cs" value="${c.id}" ${r.consent===c.id?"checked":""}>
+            <span>${esc(c.label)}<em>${esc(c.hint)}</em></span>
+          </label>`).join("")}
+      </div>
+    </div>
+
     <h3 class="part">추천하시는 이유</h3>
     <p class="parthint">해당되는 것을 모두 눌러 주세요. 여러 개 고르셔도 됩니다.</p>
 
@@ -553,10 +570,9 @@ function reportView(err){
       <ul>
         <li>알려주신 내용은 <b>이 앱 어디에도 표시되지 않습니다.</b> 마을동행팀 담당자만 봅니다.</li>
         <li>담당자가 확인한 뒤 찾아뵙고, 필요하면 주민센터와 함께 지원을 검토합니다.</li>
-        <li><b>추천하신 분이 누구인지 그분께 밝히지 않습니다.</b></li>
-        <li><b>처리 결과는 알려드리지 못합니다.</b> 그분의 개인정보이기 때문입니다.</li>
+        <li><b>원하신다면 추천하신 분이 누구인지 그분께 밝히지 않습니다.</b></li>
         <li>알려주신 정보는 상담·지원 목적으로만 쓰고 1년 뒤 지웁니다.</li>
-        <li>이웃과의 다툼이나 소음은 ${esc(DONG.name)}으로 문의해 주세요.</li>
+        <li>본인이 원치 않으시면 지원을 강요하지 않습니다.</li>
       </ul>
     </div>
 
@@ -572,6 +588,9 @@ function reportView(err){
   `);
 
   document.getElementById("back").onclick = home;
+  app.querySelectorAll('input[name=cs]').forEach(el=>{
+    el.onchange = ()=>{ sync(); r.consent = el.value; reportView(); };
+  });
   app.querySelectorAll("[data-r]").forEach(el=>{
     el.onclick = ()=>{
       sync();
@@ -610,6 +629,8 @@ async function send(){
   body.append(f.addr,        `${AREA} ${r.addr.trim()}`.trim());
   body.append(f.tel,         r.tel.trim()         || "적지 않음");
   body.append(f.age,         r.age.trim()         || "적지 않음");
+  const cs = CONSENTS.find(x=>x.id===r.consent);
+  body.append(f.consent,     cs ? cs.label : "고르지 않음");
   body.append(f.reasons,     r.reasons.join(" / "));
   body.append(f.detail,      r.detail.trim()      || "적지 않음");
   body.append(f.reporter,    r.reporter.trim());
@@ -625,7 +646,7 @@ async function send(){
     return reportView("보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.");
   }
 
-  r = {name:"", addr:"", tel:"", age:"", reasons:[], detail:"",
+  r = {name:"", addr:"", tel:"", age:"", consent:"", reasons:[], detail:"",
        reporter:"", reporterTel:"", agree:false};
   shell(`
     <div class="thanks">
