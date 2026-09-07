@@ -201,6 +201,20 @@ textarea{min-height:130px}
       질문 6개를 모두 '단답형' 또는 '장문형' 으로 만드세요.
       ※ 이 폼의 응답 시트는 절대 '웹에 게시' 하지 마세요.
       ※ 비워두면 신고 버튼이 안내문으로 바뀌고 전화 접수만 됩니다. */
+const FORM = {
+  id: "",
+  fields: {
+    name:"entry.000000",        /* 걱정되는 분 성함     */
+    addr:"entry.000000",        /* 사시는 곳            */
+    tel:"entry.000000",         /* 연락처               */
+    age:"entry.000000",         /* 연세                 */
+    consent:"entry.000000",     /* 본인 연락 동의 여부  */
+    reasons:"entry.000000",     /* 추천 이유            */
+    detail:"entry.000000",      /* 자세한 내용          */
+    reporter:"entry.000000",    /* 추천하신 분 성함     */
+    reporterTel:"entry.000000"  /* 추천하신 분 연락처   */
+  }
+};
 
 /* 2) 시범 지역과 통 목록 — 돈암1동 실제 구성에 맞게 */
 const AREA  = "돈암1동";
@@ -383,11 +397,11 @@ function home(keep){
     document.documentElement.style.setProperty("--step", bigger?"4px":"0px");
     home(true);
   };
-  document.getElementById("report").onclick = reportView;
+  document.getElementById("report").onclick = function(){ reportView(); };
   document.getElementById("guide").onclick  = guideView;
   document.getElementById("faq").onclick    = faqView;
   const mb = document.getElementById("map");
-  if (mb) mb.onclick = mapView;
+  if (mb) mb.onclick = function(){ mapView(); };
   const ib = document.getElementById("doinstall");
   if (ib) ib.onclick = async ()=>{
     if (!installEvt) return;
@@ -414,8 +428,8 @@ function guideView(){
 
     <button class="call" id="go">이웃 안부 알리기</button>
   `);
-  document.getElementById("back").onclick = home;
-  document.getElementById("go").onclick = reportView;
+  document.getElementById("back").onclick = function(){ home(); };
+  document.getElementById("go").onclick = function(){ reportView(); };
 }
 
 /* ── 화면: 우리 동네 지도 ───────────────────────────── */
@@ -443,8 +457,8 @@ function mapView(keep){
 
     <button class="call" id="go" style="margin-top:26px">이웃 안부 알리기</button>
   `, keep);
-  document.getElementById("back").onclick = home;
-  document.getElementById("go").onclick = reportView;
+  document.getElementById("back").onclick = function(){ home(); };
+  document.getElementById("go").onclick = function(){ reportView(); };
   document.getElementById("zoomtoggle").onclick = ()=>{
     mapBig = !mapBig;
     mapView(true);
@@ -464,8 +478,8 @@ function faqView(){
     ${FAQ.map(([q,a])=>`<div class="qa"><h3>${esc(q)}</h3><p>${esc(a)}</p></div>`).join("")}
     <button class="call" id="go">이웃 안부 알리기</button>
   `);
-  document.getElementById("back").onclick = home;
-  document.getElementById("go").onclick = reportView;
+  document.getElementById("back").onclick = function(){ home(); };
+  document.getElementById("go").onclick = function(){ reportView(); };
 }
 
 /* ── 화면: 이웃 추천 ────────────────────────────────── */
@@ -579,7 +593,7 @@ function reportView(err, keep){
          <a class="call" href="${telHref(CENTER.tel)}">복지관 ${esc(CENTER.tel)} 전화하기</a>`}
   `, keep);
 
-  document.getElementById("back").onclick = home;
+  document.getElementById("back").onclick = function(){ home(); };
   app.querySelectorAll('input[name=cs]').forEach(el=>{
     el.onchange = ()=>{ sync(); r.consent = el.value; reportView(null, true); };
   });
@@ -592,7 +606,7 @@ function reportView(err, keep){
     };
   });
   const sb = document.getElementById("send");
-  if (sb) sb.onclick = send;
+  if (sb) sb.onclick = function(){ send(); };
 }
 
 function sync(){
@@ -649,7 +663,7 @@ async function send(){
     </div>
     <button class="call ghost" id="hb" style="margin-top:22px">처음으로</button>
   `);
-  document.getElementById("hb").onclick = home;
+  document.getElementById("hb").onclick = function(){ home(); };
 }
 
 home();

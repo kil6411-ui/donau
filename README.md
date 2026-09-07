@@ -62,7 +62,7 @@ vercel.com → GitHub 로그인 → **Add New → Project** → **Import** → *
 
 ### 1) 구글 폼 만들기
 
-forms.google.com → 새 폼. 질문 8개를 **모두 단답형 또는 장문형**으로.
+forms.google.com → 새 폼. 질문 9개를 **모두 단답형 또는 장문형**으로.
 (객관식으로 만들면 앱에서 보낸 값이 거부됩니다)
 
 | 순서 | 질문 | 형식 |
@@ -71,10 +71,11 @@ forms.google.com → 새 폼. 질문 8개를 **모두 단답형 또는 장문형
 | 2 | 사시는 곳 | 단답형 |
 | 3 | 연락처 | 단답형 |
 | 4 | 연세 | 단답형 |
-| 5 | 추천 이유 | 단답형 |
-| 6 | 자세한 내용 | 장문형 |
-| 7 | 추천하신 분 성함 | 단답형 |
-| 8 | 추천하신 분 연락처 | 단답형 |
+| 5 | 본인 연락 동의 여부 | 단답형 |
+| 6 | 추천 이유 | 단답형 |
+| 7 | 자세한 내용 | 장문형 |
+| 8 | 추천하신 분 성함 | 단답형 |
+| 9 | 추천하신 분 연락처 | 단답형 |
 
 ### 2) entry 번호와 폼 id 찾기
 
@@ -94,10 +95,11 @@ const FORM = {
     addr:        "entry.222222222",
     tel:         "entry.333333333",
     age:         "entry.444444444",
-    reasons:     "entry.555555555",
-    detail:      "entry.666666666",
-    reporter:    "entry.777777777",
-    reporterTel: "entry.888888888"
+    consent:     "entry.555555555",
+    reasons:     "entry.666666666",
+    detail:      "entry.777777777",
+    reporter:    "entry.888888888",
+    reporterTel: "entry.999999999"
   }
 };
 ```
@@ -168,6 +170,7 @@ GitHub에서 `index.html` → 연필 아이콘 → 수정 → **Commit changes**
 - `CENTER` `HELP` `DONG` — 연락처
 - `HOURS` — 업무 시간 (토요일 근무가 있으면 `days` 에 `6` 추가)
 - `REASONS` — 추천 이유 네모 항목
+- `CONSENTS` — 본인 연락 동의 선택지
 - `GUIDE` — "어떤 경우에 알려야 하나요" 안내문
 - `FAQ` — 자주 묻는 질문
 
