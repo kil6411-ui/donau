@@ -1,7 +1,7 @@
 /* 돈암1동 이웃살핌 — 오프라인 캐시
    ※ 자원 정보를 고친 뒤에는 아래 VERSION 숫자를 꼭 올리세요.
      안 올리면 주민 휴대폰에 예전 내용이 계속 남습니다. */
-const VERSION = "v12";
+const VERSION = "v14";
 const CACHE = "donam1-" + VERSION;
 
 /* 인터넷 없이도 떠야 하는 파일들 */
