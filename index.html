@@ -152,6 +152,9 @@ textarea{min-height:130px}
 .telbox{margin-top:16px;padding:18px;border-radius:14px;background:var(--mist)}
 .telbox p{margin:0 0 13px;font-size:calc(15.5px + var(--step))}
 .telbox .call{background:#fff}
+.subnote{margin:14px 0 0;text-align:center;color:var(--stone);
+  font-size:calc(15px + var(--step))}
+.subnote a{color:var(--pine);text-decoration:none}
 
 /* ── 동네 지도 ── */
 .legend{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:7px 16px}
@@ -196,25 +199,16 @@ textarea{min-height:130px}
    설정 — 여기만 고치시면 됩니다
    ======================================================================= */
 
-/* 1) 신고 접수용 구글 폼
-      developers 계정 필요 없음. forms.google.com 에서 만듭니다.
-      질문 6개를 모두 '단답형' 또는 '장문형' 으로 만드세요.
-      ※ 이 폼의 응답 시트는 절대 '웹에 게시' 하지 마세요.
-      ※ 비워두면 신고 버튼이 안내문으로 바뀌고 전화 접수만 됩니다. */
-const FORM = {
-  id: "",
-  fields: {
-    name:"entry.000000",        /* 걱정되는 분 성함     */
-    addr:"entry.000000",        /* 사시는 곳            */
-    tel:"entry.000000",         /* 연락처               */
-    age:"entry.000000",         /* 연세                 */
-    consent:"entry.000000",     /* 본인 연락 동의 여부  */
-    reasons:"entry.000000",     /* 추천 이유            */
-    detail:"entry.000000",      /* 자세한 내용          */
-    reporter:"entry.000000",    /* 추천하신 분 성함     */
-    reporterTel:"entry.000000"  /* 추천하신 분 연락처   */
-  }
-};
+/* 1) 접수 서버 주소
+      「접수서버.gs」 를 구글 앱스 스크립트에 올리고 웹 앱으로 배포하면
+      나오는 주소를 그대로 붙여넣으세요. (설치법은 그 파일 맨 위에)
+        예) https://script.google.com/macros/s/AKfycb..../exec
+      비워두면 접수하기를 눌렀을 때 전화 안내가 나옵니다. */
+/* 배포 화면에 나온 웹 앱 URL 을 그대로 붙여넣습니다.
+   기관 계정은 아래 두 형태가 있습니다. 첫 번째가 안 되면 두 번째로 바꿔보세요.
+     https://script.google.com/a/macros/guswc.org/s/배포ID/exec
+     https://script.google.com/macros/s/배포ID/exec                */
+const ENDPOINT = "https://script.google.com/a/macros/guswc.org/s/AKfycbxk2CgAPbCkYbbovmVA9mahn7Io7ltRG3ss0ylbKQtJ-mRG4B0y6wGzBN_cAEf0fRk/exec";
 
 /* 2) 시범 지역과 통 목록 — 돈암1동 실제 구성에 맞게 */
 const AREA  = "돈암1동";
@@ -587,10 +581,9 @@ function reportView(err, keep){
       <span>위 내용을 읽었고, 이웃을 돕기 위해 알린다는 데 동의합니다.</span>
     </label>
 
-    ${FORM.id
-      ? `<button class="call" id="send">알리기</button>`
-      : `<div class="note">지금은 전화로만 접수하고 있습니다.</div>
-         <a class="call" href="${telHref(CENTER.tel)}">복지관 ${esc(CENTER.tel)} 전화하기</a>`}
+    <button class="call" id="send">접수하기</button>
+    <p class="subnote">전화로 알리셔도 됩니다 ·
+       <a href="${telHref(CENTER.tel)}"><b>${esc(CENTER.tel)}</b></a></p>
   `, keep);
 
   document.getElementById("back").onclick = function(){ home(); };
@@ -629,34 +622,48 @@ async function send(){
   if (!r.agree)
     return reportView("맨 아래 동의에 표시해 주세요.");
 
-  const f = FORM.fields;
-  const body = new FormData();
-  body.append(f.name,        r.name.trim()        || "적지 않음");
-  body.append(f.addr,        `${AREA} ${r.addr.trim()}`.trim());
-  body.append(f.tel,         r.tel.trim()         || "적지 않음");
-  body.append(f.age,         r.age.trim()         || "적지 않음");
+  if (!ENDPOINT)
+    return reportView("아직 인터넷 접수 준비가 끝나지 않았습니다. 아래 번호로 전화 주시면 바로 받겠습니다.");
+
   const cs = CONSENTS.find(x=>x.id===r.consent);
-  body.append(f.consent,     cs ? cs.label : "고르지 않음");
-  body.append(f.reasons,     r.reasons.join(" / "));
-  body.append(f.detail,      r.detail.trim()      || "적지 않음");
-  body.append(f.reporter,    r.reporter.trim());
-  body.append(f.reporterTel, r.reporterTel.trim() || "적지 않음");
+  const 자료 = {
+    name:        r.name.trim(),
+    addr:        (AREA + " " + r.addr.trim()).trim(),
+    tel:         r.tel.trim(),
+    age:         r.age.trim(),
+    consent:     cs ? cs.label : "",
+    reasons:     r.reasons.join(" / "),
+    detail:      r.detail.trim(),
+    reporter:    r.reporter.trim(),
+    reporterTel: r.reporterTel.trim()
+  };
 
   const btn = document.getElementById("send");
   if (btn){ btn.textContent = "보내는 중…"; btn.disabled = true; }
 
+  let 결과 = null;
   try {
-    await fetch(`https://docs.google.com/forms/d/e/${FORM.id}/formResponse`,
-                {method:"POST", mode:"no-cors", body});
-  } catch(e) {
-    return reportView("보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.");
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      /* text/plain 으로 보내야 사전 확인 요청 없이 바로 전달됩니다 */
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(자료),
+      redirect: "follow"
+    });
+    결과 = await res.json();
+  } catch (e) {
+    결과 = null;
+  }
+
+  if (!결과 || !결과.ok) {
+    return reportView("보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요. 계속 안 되면 아래 번호로 전화 주세요.");
   }
 
   r = {name:"", addr:"", tel:"", age:"", consent:"", reasons:[], detail:"",
        reporter:"", reporterTel:"", agree:false};
   shell(`
     <div class="thanks">
-      <h2>알려주셔서 고맙습니다</h2>
+      <h2>접수되었습니다</h2>
       <p>마을동행팀 담당자가 확인하겠습니다.</p>
       <p>${isOpenNow() ? "오늘 안에 확인합니다." : "다음 근무일에 확인합니다."}</p>
       <p style="margin-top:14px">어떤 조치가 이루어지는지 알려드리겠습니다.</p>
